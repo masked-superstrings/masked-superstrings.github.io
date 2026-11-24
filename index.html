@@ -109,6 +109,34 @@ header p{margin:0 0 18px}
 .whatis-title{font:600 15px/1.4 var(--sans);color:var(--nejm-red);margin:0 0 10px 4px}
 .whatis .msg{background:var(--bg);margin:0}
 .sec .covers{margin:6px 0 8px;background:var(--bg);border-radius:8px;padding:4px 12px}
+/* Construction cost chart (adapted from Fig. 2 of the paper); bar lengths are multiples of unitig construction, axis 0–6× */
+.k-bigreedy{--c:var(--nejm-red)}
+.k-pandedup{--c:#de9e94}
+.cost{margin:8px 0 10px;background:var(--bg);border-radius:8px;padding:10px 12px}
+.cost-key{display:flex;flex-wrap:wrap;gap:2px 14px;margin:0 0 8px;font:11.5px/1.5 var(--sans);color:var(--text)}
+.cost-key span{white-space:nowrap}
+.cost-key span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--c);margin-right:5px}
+.cost-grid{display:grid;grid-template-columns:auto .55fr 1fr 1fr;column-gap:18px;align-items:center}
+.cost-grid .hd{position:relative;margin-right:44px;padding-bottom:16px;font:600 12px/1.4 var(--sans);color:var(--heading)}
+.cost-grid .hd span{position:absolute;bottom:2px;left:calc(var(--v)/var(--max,6)*100%);transform:translateX(-50%);font:400 9.5px/1 var(--sans);color:var(--faint)}
+.cost-grid .hd .one{color:var(--nejm-purple);font-weight:600}
+.cost-grid .ds{font:10.5px/1.35 var(--sans);color:var(--muted)}
+.cost-grid .ds b{display:block;font-size:11.5px;font-weight:600;color:var(--text)}
+.bars{--max:6;position:relative;margin-right:44px;padding:5px 0;background:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100%/6));box-shadow:1px 0 var(--line)}
+.bars::after{content:"";position:absolute;top:0;bottom:0;left:calc(100%/var(--max));border-left:1px solid var(--nejm-purple)}
+.bars>i{display:block;position:relative;height:6px;margin:0 0 3px;width:calc(var(--v)/var(--max)*100%);background:var(--c)}
+.bars>i:last-child{margin:0}
+.bars>i b{position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:4px;font:400 9.5px/1 var(--sans);color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bars>.cut{width:calc(100% + 10px)}
+.bars>.cut::after{content:"";position:absolute;right:4px;top:-1px;bottom:-1px;width:3px;background:var(--bg);transform:skewX(-25deg)}
+.bars>.na{width:calc(100%/var(--max));background:none}
+.bars>.na b{color:var(--faint)}
+.bars>.best b{font-weight:700;color:var(--text)}
+.cost-grid .len{--max:1;margin-right:32px}
+.bars.len{background:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 50%);box-shadow:none}
+.bars.len>i b{left:calc(100%/var(--v))}
+.bars.len>.na b{left:100%}
+.cost .caption{margin-top:10px}
 
 /* News */
 #news h2{margin:36px 0 12px}
@@ -192,6 +220,12 @@ h2{margin-top:42px}
 .stair .rule{margin-left:78px}
 .sec .body{padding:0 12px 12px 14px}
 .msg .legend{max-width:none}
+.cost-grid{grid-template-columns:.7fr 1fr 1fr;column-gap:8px}
+.cost-grid .sp,.cost-grid .hd .m{display:none}
+.cost-grid .ds{grid-column:1/-1;padding-top:8px}
+.cost-grid .ds b{display:inline}
+.cost-grid .hd,.bars{margin-right:40px}
+.cost-grid .len{margin-right:28px}
 .news li{grid-template-columns:64px 1fr;gap:10px}
 .older summary{margin-left:74px}
 .tool{grid-template-columns:72px 1fr;gap:16px}
@@ -269,8 +303,44 @@ h2{margin-top:42px}
         </div>
         <p>Masks are not unique: they can be chosen to avoid duplicate <span class="nw"><i>k</i>-mers</span> or to make the mask more compressible.</p>
       </div></details>
-      <details class="sec"><summary><span>Masked superstrings can be easily and efficiently computed</span></summary><div class="body">
-        <p>BiGreedy adapts the classical greedy superstring algorithm to genomic <span class="nw"><i>k</i>-mer</span> sets: it repeatedly merges the two sequences with the longest suffix–prefix overlap, accounting for reverse complements. Because any duplicate-free SPSS is a valid intermediate state, BiGreedy can start from unitigs or simplitigs computed by parallel tools such as GGCAT, adding little time over unitig construction, and the resulting superstrings keep them as retrievable substrings.</p>
+      <details class="sec"><summary><span>Masked superstrings can be computed efficiently</span></summary><div class="body">
+        <p>BiGreedy adapts the classical greedy superstring algorithm to genomic <span class="nw"><i>k</i>-mer</span> sets: it repeatedly merges the two sequences with the longest suffix–prefix overlap, accounting for reverse complements. Because any duplicate-free SPSS is a valid intermediate state, BiGreedy can start from unitigs or simplitigs computed by parallel tools such as <a href="https://github.com/algbio/ggcat">GGCAT</a>, and the resulting superstrings keep them as retrievable substrings.</p>
+        <p>As a result, computing masked superstrings is similar to computing unitigs: most of the time goes to unitig construction, and the additional BiGreedy step is cheap. With the parallel implementation, the whole computation takes 1.0–1.3× the time of unitig construction alone.</p>
+        <figure class="cost">
+          <div class="cost-key"><span class="k-unitigs">Unitigs</span><span class="k-simplitigs">Greedy simplitigs</span><span class="k-matchtigs">Greedy matchtigs</span><span class="k-bigreedy">Masked superstrings (KmerCamel)</span><span class="k-pandedup">Masked superstrings (Pandedup)</span></div>
+          <div class="cost-grid" role="img" aria-label="Bar chart of the length of k-mer set representations and of the time to compute them on seven datasets, relative to unitigs. Masked superstrings have 35 to 70% of the length of unitigs, greedy simplitigs 50 to 76%, greedy matchtigs 40 to 72%. Masked superstrings computed with Pandedup take 1.0 to 1.1 times the CPU time and 1.0 to 1.3 times the real time of unitigs; with single-threaded KmerCamel 1.0 to 1.4 times the CPU time and 1.0 to 5.1 times the real time. Greedy simplitigs take up to 1.9 and 2.2 times, greedy matchtigs up to 40.9 and 50.5 times.">
+          <div class="sp"></div><div class="hd len">Length<span style="--v:0">0</span><span class="m" style="--v:.5">50%</span><span class="one" style="--v:1">100%</span></div><div class="hd">CPU time<span class="m" style="--v:0">0</span><span class="one" style="--v:1">1×</span><span class="m" style="--v:2">2×</span><span style="--v:3">3×</span><span class="m" style="--v:4">4×</span><span class="m" style="--v:5">5×</span><span style="--v:6">6×</span></div><div class="hd">Real time<span class="m" style="--v:0">0</span><span class="one" style="--v:1">1×</span><span class="m" style="--v:2">2×</span><span style="--v:3">3×</span><span class="m" style="--v:4">4×</span><span class="m" style="--v:5">5×</span><span style="--v:6">6×</span></div>
+          <div class="ds"><b>Human genome</b> <span>T2T-CHM13 assembly</span></div>
+          <div class="bars len"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:0.760"><b>76%</b></i><i class="k-matchtigs" style="--v:0.711"><b>71%</b></i><i class="best k-bigreedy" style="--v:0.699"><b>70%</b></i><i class="best k-pandedup" style="--v:0.700"><b>70%</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.871"><b>1.9×</b></i><i class="cut k-matchtigs"><b>40.9×</b></i><i class="k-bigreedy" style="--v:1.430"><b>1.4×</b></i><i class="best k-pandedup" style="--v:1.064"><b>1.1×</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:2.246"><b>2.2×</b></i><i class="cut k-matchtigs"><b>50.5×</b></i><i class="k-bigreedy" style="--v:5.059"><b>5.1×</b></i><i class="best k-pandedup" style="--v:1.261"><b>1.3×</b></i></div>
+          <div class="ds"><b>Human pangenome</b> <span>472 genomes</span></div>
+          <div class="bars len"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:0.577"><b>58%</b></i><i class="k-matchtigs" style="--v:0.521"><b>52%</b></i><i class="best k-bigreedy" style="--v:0.472"><b>47%</b></i><i class="best k-pandedup" style="--v:0.472"><b>47%</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.011"><b>1.0×</b></i><i class="k-matchtigs" style="--v:2.336"><b>2.3×</b></i><i class="k-bigreedy" style="--v:1.021"><b>1.0×</b></i><i class="best k-pandedup" style="--v:1.002"><b>1.0×</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.025"><b>1.0×</b></i><i class="k-matchtigs" style="--v:2.735"><b>2.7×</b></i><i class="k-bigreedy" style="--v:1.211"><b>1.2×</b></i><i class="best k-pandedup" style="--v:1.009"><b>1.0×</b></i></div>
+          <div class="ds"><b><i>E. coli</i> pangenome</b> <span>85,885 genomes</span></div>
+          <div class="bars len"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:0.560"><b>56%</b></i><i class="k-matchtigs" style="--v:0.484"><b>48%</b></i><i class="best k-bigreedy" style="--v:0.443"><b>44%</b></i><i class="best k-pandedup" style="--v:0.443"><b>44%</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.006"><b>1.0×</b></i><i class="k-matchtigs" style="--v:1.013"><b>1.0×</b></i><i class="k-bigreedy" style="--v:1.009"><b>1.0×</b></i><i class="best k-pandedup" style="--v:1.001"><b>1.0×</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.015"><b>1.0×</b></i><i class="k-matchtigs" style="--v:1.041"><b>1.0×</b></i><i class="k-bigreedy" style="--v:1.107"><b>1.1×</b></i><i class="best k-pandedup" style="--v:1.005"><b>1.0×</b></i></div>
+          <div class="ds"><b>SARS-CoV-2 pangenome</b> <span>16.7 M genomes</span></div>
+          <div class="bars len"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:0.498"><b>50%</b></i><i class="k-matchtigs" style="--v:0.400"><b>40%</b></i><i class="best k-bigreedy" style="--v:0.349"><b>35%</b></i><i class="best k-pandedup" style="--v:0.349"><b>35%</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.000"><b>1.0×</b></i><i class="k-matchtigs" style="--v:1.000"><b>1.0×</b></i><i class="k-bigreedy" style="--v:1.000"><b>1.0×</b></i><i class="best k-pandedup" style="--v:1.000"><b>1.0×</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.001"><b>1.0×</b></i><i class="k-matchtigs" style="--v:1.002"><b>1.0×</b></i><i class="k-bigreedy" style="--v:1.005"><b>1.0×</b></i><i class="best k-pandedup" style="--v:1.000"><b>1.0×</b></i></div>
+          <div class="ds"><b>Human genome</b> <span>Illumina reads</span></div>
+          <div class="bars len"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:0.626"><b>63%</b></i><i class="na k-matchtigs"><b>&gt; 24 h</b></i><i class="best k-bigreedy" style="--v:0.433"><b>43%</b></i><i class="best k-pandedup" style="--v:0.433"><b>43%</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.078"><b>1.1×</b></i><i class="na k-matchtigs"><b>&gt; 24 h</b></i><i class="k-bigreedy" style="--v:1.266"><b>1.3×</b></i><i class="best k-pandedup" style="--v:1.024"><b>1.0×</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.158"><b>1.2×</b></i><i class="na k-matchtigs"><b>&gt; 24 h</b></i><i class="k-bigreedy" style="--v:3.189"><b>3.2×</b></i><i class="best k-pandedup" style="--v:1.070"><b>1.1×</b></i></div>
+          <div class="ds"><b>Human microbiome</b> <span>Illumina reads</span></div>
+          <div class="bars len"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:0.758"><b>76%</b></i><i class="k-matchtigs" style="--v:0.720"><b>72%</b></i><i class="best k-bigreedy" style="--v:0.610"><b>61%</b></i><i class="best k-pandedup" style="--v:0.610"><b>61%</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.151"><b>1.2×</b></i><i class="k-matchtigs" style="--v:1.175"><b>1.2×</b></i><i class="k-bigreedy" style="--v:1.296"><b>1.3×</b></i><i class="best k-pandedup" style="--v:1.026"><b>1.0×</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.275"><b>1.3×</b></i><i class="k-matchtigs" style="--v:1.450"><b>1.5×</b></i><i class="k-bigreedy" style="--v:4.240"><b>4.2×</b></i><i class="best k-pandedup" style="--v:1.104"><b>1.1×</b></i></div>
+          <div class="ds"><b>Human transcriptome</b> <span>Illumina RNA-seq reads</span></div>
+          <div class="bars len"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:0.589"><b>59%</b></i><i class="k-matchtigs" style="--v:0.537"><b>54%</b></i><i class="best k-bigreedy" style="--v:0.365"><b>36%</b></i><i class="best k-pandedup" style="--v:0.365"><b>36%</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.047"><b>1.0×</b></i><i class="cut k-matchtigs"><b>13.0×</b></i><i class="k-bigreedy" style="--v:1.225"><b>1.2×</b></i><i class="best k-pandedup" style="--v:1.016"><b>1.0×</b></i></div>
+          <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.132"><b>1.1×</b></i><i class="cut k-matchtigs"><b>17.3×</b></i><i class="k-bigreedy" style="--v:3.405"><b>3.4×</b></i><i class="best k-pandedup" style="--v:1.062"><b>1.1×</b></i></div>
+          </div>
+          <figcaption class="caption">Length of <span class="nw"><i>k</i>-mer</span> set representations and time to compute them from the input sequences (<i>k</i>&nbsp;=&nbsp;31), relative to unitigs (purple lines). Unitigs, greedy simplitigs and greedy matchtigs were computed with <a href="https://github.com/algbio/ggcat">GGCAT</a> (8 threads); masked superstrings with BiGreedy from the unitigs, using <a href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a> (1 thread) or <a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a> (8 threads); the better of the two is in bold. Bars beyond 6× are truncated; matchtigs of the human reads did not finish within 24&nbsp;h. Adapted from Fig.&nbsp;2 of the upcoming new version of the masked superstrings paper.</figcaption>
+        </figure>
         <p>Across <span class="nw"><i>k</i>-mer</span> sizes, pangenome expansion, abundance filtering and subsampling, BiGreedy superstrings stay very close to a lower bound on superstring length, and are substantially shorter than simplitigs and matchtigs where the de Bruijn graph branches or fragments. BiGreedy is implemented in <a href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a> and, in parallel, in <a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a>.</p>
       </div></details>
       <details class="sec"><summary><span>Masked superstrings improve compression</span></summary><div class="body">
