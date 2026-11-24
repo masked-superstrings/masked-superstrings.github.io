@@ -149,6 +149,7 @@ header p{margin:0 0 18px}
 .c-blue{--accent:var(--nejm-blue);--accent-bg:#e3eef6}
 .c-orange{--accent:#c56d12;--accent-bg:#fcefe0}
 .c-green{--accent:var(--nejm-green);--accent-bg:#e2f1e8}
+.c-pro{--accent:#fff;--accent-bg:var(--nejm-purple)}
 .authors{font-size:15px;margin:2px 0}
 .venue{font-size:15px;color:var(--muted)}
 .doi{font:13px/1.6 var(--sans);color:var(--muted)}
@@ -237,7 +238,7 @@ h2{margin-top:42px}
           <div class="legend">
             <p>A <b>masked superstring</b> is a string containing every <span class="nw"><i>k</i>-mer</span> of a set, plus a binary mask.</p>
             <p>Each 1 in the mask switches <span class="on">on</span> the <span class="nw"><i>k</i>-mer</span> starting at that position; the other occurrences are ignored.</p>
-            <p>Here, <span class="mono">GGACCGACTT</span> + <span class="mono">1110101100</span> represents {GGA, ACC, CGA, GAC, ACT, CTT}, written in mask-cased form as <span class="mono">GGAcCgACtt</span>.</p>
+            <p>Here, <span class="mono">GGACCGACTT</span> + <span class="mono">1110101100</span> represents {GGA, ACC, CGA, GAC, ACT, CTT}.</p>
           </div>
         </div>
       </div>
@@ -281,8 +282,8 @@ h2{margin-top:42px}
         <div class="links"><a href="https://github.com/masked-superstrings/fmsi">GitHub</a><a href="https://anaconda.org/bioconda/fmsi">Bioconda</a><a href="https://doi.org/10.1093/bioadv/vbaf290">Paper</a></div>
       </div>
     </div>
-    <div class="tool c-blue">
-      <div class="icon"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="26" r="20" fill="none" stroke-width="2.5"/><path d="M40.5 40.5L57 57" stroke-width="4" stroke-linecap="round"/><text x="26" y="25" text-anchor="middle" font-size="7">ACG<tspan opacity=".5">t</tspan>A<tspan opacity=".5">ca</tspan></text><text x="26" y="33" text-anchor="middle" font-size="7" opacity=".6">1110100</text><text x="56" y="18" text-anchor="middle" font-size="15">2</text></svg></div>
+    <div class="tool c-pro">
+      <div class="icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M2 20H9M0 28H8M2 36H9" stroke-width="2.2" stroke-linecap="round" opacity=".7"/><circle cx="31" cy="28" r="19" fill="none" stroke-width="3"/><path d="M44.5 41.5L59 56" stroke-width="5" stroke-linecap="round"/><text x="31" y="27" text-anchor="middle" font-size="6.8">ACG<tspan opacity=".5">t</tspan>A<tspan opacity=".5">ca</tspan></text><text x="31" y="35" text-anchor="middle" font-size="6.8" opacity=".6">1110100</text><text x="57" y="15" text-anchor="middle" font-size="15" font-weight="800">2</text></svg></div>
       <div>
         <a class="name" href="https://github.com/masked-superstrings/fmsi2">FMSI2</a> – a more efficient and optimized version of FMSI with support for parallelization.
         <div class="links"><a href="https://github.com/masked-superstrings/fmsi2">GitHub</a></div>
