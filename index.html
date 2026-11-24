@@ -159,6 +159,17 @@ a.icon:hover,a.figure:hover{filter:brightness(.94);transform:translateY(-1px)}
 .doi{font:13px/1.6 var(--sans);color:var(--muted)}
 .description{margin:8px 0 4px}
 
+/* BibTeX */
+.bib-btn{font:inherit;color:var(--link);background:none;border:0;padding:0;cursor:pointer}
+.bib-btn:hover{color:var(--link-hover);text-decoration:underline;text-underline-offset:2px}
+.bib-btn[aria-expanded="true"]::after{content:" \25BE"}
+.bib-btn:focus-visible,.bib-copy:focus-visible{outline:2px solid var(--link);outline-offset:2px;border-radius:2px}
+.bib{position:relative;margin-top:8px}
+.bib pre{margin:0;padding:10px 12px;padding-right:64px;background:var(--soft);border:1px solid var(--line);border-radius:6px;font:11.5px/1.55 var(--mono);color:var(--text);white-space:pre-wrap;overflow-wrap:anywhere}
+.featured .bib pre{background:#fff}
+.bib-copy{position:absolute;top:7px;right:7px;font:500 11.5px/1 var(--sans);color:var(--link);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:5px 8px;cursor:pointer}
+.bib-copy:hover{border-color:var(--link)}
+
 /* People */
 .people{padding-left:20px;margin:0}
 .people li{margin:5px 0}
@@ -311,7 +322,15 @@ h2{margin-top:42px}
           <a href="https://doi.org/10.1101/2023.02.01.526717">Preprint</a>
           <a href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a>
           <a href="https://github.com/masked-superstrings/ms-supplement">Code &amp; data</a>
+          <button type="button" class="bib-btn" aria-expanded="false" aria-controls="bib-ms">BibTeX</button>
         </div>
+        <div class="bib" id="bib-ms" hidden><button type="button" class="bib-copy">Copy</button><pre>@article{Sladky2023masked,
+  title   = {Masked superstrings as a unified framework for textual $k$-mer set representations},
+  author  = {Ond{\v{r}}ej Sladk{\'{y}} and Pavel Vesel{\'{y}} and Karel B{\v{r}}inda},
+  journal = {bioRxiv},
+  year    = {2023},
+  doi     = {10.1101/2023.02.01.526717}
+}</pre></div>
       </div>
     </article>
     <article class="project c-blue" id="fmsi">
@@ -327,7 +346,18 @@ h2{margin-top:42px}
           <a href="https://brinda.eu/papers/2026-SladkyEtAl-BioinformAdv.pdf">PDF</a>
           <a href="https://doi.org/10.1093/bioadv/vbaf290">Paper</a>
           <a href="https://github.com/masked-superstrings/fmsi">FMSI</a>
+          <button type="button" class="bib-btn" aria-expanded="false" aria-controls="bib-fmsi">BibTeX</button>
         </div>
+        <div class="bib" id="bib-fmsi" hidden><button type="button" class="bib-copy">Copy</button><pre>@article{Sladky2026fmsi,
+  title   = {{FroM Superstring to Indexing}: a space-efficient index for unconstrained $k$-mer sets using the {Masked Burrows-Wheeler Transform (MBWT)}},
+  author  = {Ond{\v{r}}ej Sladk{\'{y}} and Pavel Vesel{\'{y}} and Karel B{\v{r}}inda},
+  journal = {Bioinformatics Advances},
+  volume  = {6},
+  number  = {1},
+  pages   = {vbaf290},
+  year    = {2026},
+  doi     = {10.1093/bioadv/vbaf290}
+}</pre></div>
       </div>
     </article>
     <article class="project c-orange" id="pareto">
@@ -344,7 +374,15 @@ h2{margin-top:42px}
           <a href="https://doi.org/10.1177/15578666261491601">Paper</a>
           <a href="https://doi.org/10.64898/2026.03.18.712440">Preprint</a>
           <a href="https://github.com/masked-superstrings/pareto-optimization-supplement">Code &amp; data</a>
+          <button type="button" class="bib-btn" aria-expanded="false" aria-controls="bib-pareto">BibTeX</button>
         </div>
+        <div class="bib" id="bib-pareto" hidden><button type="button" class="bib-copy">Copy</button><pre>@article{Plachy2026pareto,
+  title   = {{Pareto} optimization of masked superstrings improves compression of pan-genome $k$-mer sets},
+  author  = {J{\'{a}}n Plach{\'{y}} and Ond{\v{r}}ej Sladk{\'{y}} and Karel B{\v{r}}inda and Pavel Vesel{\'{y}}},
+  journal = {Journal of Computational Biology},
+  year    = {2026},
+  doi     = {10.1177/15578666261491601}
+}</pre></div>
       </div>
     </article>
     <article class="project c-green" id="fms">
@@ -361,7 +399,18 @@ h2{margin-top:42px}
           <a href="https://www.stringology.org/event/2025/p04.html">Paper</a>
           <a href="https://doi.org/10.1101/2024.03.06.583483">Preprint</a>
           <a href="https://github.com/masked-superstrings/fmsi">FMSI</a>
+          <button type="button" class="bib-btn" aria-expanded="false" aria-controls="bib-fms">BibTeX</button>
         </div>
+        <div class="bib" id="bib-fms" hidden><button type="button" class="bib-copy">Copy</button><pre>@inproceedings{Sladky2025fms,
+  title     = {Towards efficient $k$-mer set operations via function-assigned masked superstrings},
+  author    = {Ond{\v{r}}ej Sladk{\'{y}} and Pavel Vesel{\'{y}} and Karel B{\v{r}}inda},
+  booktitle = {Proceedings of the Prague Stringology Conference 2025},
+  editor    = {Jan Holub and Jan {\v{Z}}{\v{d}}{\'{a}}rek},
+  pages     = {26--40},
+  address   = {Czech Technical University in Prague, Czech Republic},
+  isbn      = {978-80-01-07461-9},
+  year      = {2025}
+}</pre></div>
       </div>
     </article>
   </section>
@@ -378,5 +427,18 @@ h2{margin-top:42px}
 <footer>
   <div class="inner">© 2026 Masked superstrings · <a href="https://github.com/masked-superstrings">GitHub</a> · Design inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a></div>
 </footer>
+<script>
+document.addEventListener('click',function(e){
+  var t=e.target.closest('.bib-btn,.bib-copy');if(!t)return;
+  if(t.classList.contains('bib-btn')){
+    var box=document.getElementById(t.getAttribute('aria-controls')),open=box.hidden;
+    box.hidden=!open;t.setAttribute('aria-expanded',open);return;
+  }
+  var pre=t.nextElementSibling;
+  function done(ok){t.textContent=ok?'Copied':'Press \u2318/Ctrl+C';setTimeout(function(){t.textContent='Copy'},1600)}
+  function fallback(){var r=document.createRange();r.selectNodeContents(pre);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);var ok=false;try{ok=document.execCommand('copy')}catch(_){}done(ok)}
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(pre.textContent).then(function(){done(true)},fallback);else fallback();
+});
+</script>
 </body>
 </html>
