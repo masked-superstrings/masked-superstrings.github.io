@@ -71,6 +71,9 @@ header p{margin:0 0 18px}
 /* Research */
 .project{display:grid;grid-template-columns:132px 1fr;gap:26px;padding:24px 0;border-top:1px solid var(--line)}
 .project:first-of-type{border-top:0;padding-top:4px}
+.project.featured{background:#fcf6f4;border-left:3px solid var(--accent);border-radius:0 6px 6px 0;padding:22px 22px 22px 19px;margin-bottom:10px}
+.project.featured+.project{border-top:0}
+.featured .figure{background:#fff}
 .figure{background:var(--accent-bg,var(--tile));border-radius:6px;color:var(--accent,var(--heading));display:grid;place-items:center;align-self:start;aspect-ratio:11/8;padding:12px}
 .figure svg{width:100%;max-width:110px;height:auto;display:block}
 .tag{font:600 11px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--accent,var(--muted));margin-bottom:5px}
@@ -104,6 +107,7 @@ h2{margin-top:42px}
 .older summary{margin-left:74px}
 .tool{grid-template-columns:72px 1fr;gap:16px}
 .project{grid-template-columns:1fr;gap:12px}
+.project.featured{padding:18px 16px 18px 15px}
 .figure{aspect-ratio:auto;min-height:96px}
 .figure svg{max-width:120px}
 }
@@ -128,13 +132,13 @@ h2{margin-top:42px}
   <section id="news">
     <h2>News</h2>
     <ul class="news">
-      <li><span class="date">Oct 2026</span> <span><a href="https://doi.org/10.1177/15578666261491601">Pareto optimization of masked superstrings</a> published in <i>J. Comput. Biol.</i></span></li>
+      <li><span class="date">Oct 2026</span> <span><a href="https://doi.org/10.1177/15578666261491601">Pareto optimization of masked superstrings</a> published in <i>J. Comput. Biol.</i> (<a href="https://brinda.eu/papers/2026-PlachyEtAl-JCB.pdf">PDF</a>).</span></li>
       <li><span class="date">Oct 2026</span> <span><a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a> by Ragnar Groot Koerkamp supports parallel masked superstring construction (<a href="https://curiouscoding.nl/posts/pandedup-log/">blog post</a>).</span></li>
-      <li><span class="date">May 2026</span> <span><a href="https://kam.mff.cuni.cz/~janci/">Ján</a> presents <a href="https://doi.org/10.1177/15578666261491601">Pareto optimization</a> at <a href="https://recomb-seq.github.io/seq2026/program">RECOMB-Seq 2026</a>, Thessaloniki.</span></li>
+      <li><span class="date">May 2026</span> <span><a href="https://kam.mff.cuni.cz/~janci/">Ján</a> presents <a href="https://doi.org/10.1177/15578666261491601">Pareto optimization</a> at <a href="https://recomb-seq.github.io/seq2026/program">RECOMB-Seq 2026</a>, Thessaloniki (<a href="https://brinda.eu/papers/2026-PlachyEtAl-JCB.pdf">PDF</a>).</span></li>
       <li><span class="date">Apr 2026</span> <span><a href="https://www.matfyz.cz/clanky/maskovane-nadretezce-oteviraji-novou-kapitolu-bioinformatiky">Interview</a> with <a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> on Matfyz.cz (in Czech).</span></li>
-      <li><span class="date">Nov 2025</span> <span><a href="https://doi.org/10.1093/bioadv/vbaf290">FMSI</a> published in <i>Bioinformatics Advances</i>.</span></li>
+      <li><span class="date">Nov 2025</span> <span><a href="https://doi.org/10.1093/bioadv/vbaf290">FMSI</a> published in <i>Bioinformatics Advances</i> (<a href="https://brinda.eu/papers/2026-SladkyEtAl-BioinformAdv.pdf">PDF</a>).</span></li>
       <li><span class="date">Sep 2025</span> <span><a href="https://kam.mff.cuni.cz/~janci/">Ján</a> defends his <a href="https://dspace.cuni.cz/handle/20.500.11956/204030">bachelor thesis</a>.</span></li>
-      <li><span class="date">Aug 2025</span> <span><a href="https://www.stringology.org/event/2025/p04.html">Function-assigned masked superstrings</a> published at PSC 2025.</span></li>
+      <li><span class="date">Aug 2025</span> <span><a href="https://www.stringology.org/event/2025/p04.html">Function-assigned masked superstrings</a> published at PSC 2025 (<a href="https://brinda.eu/papers/2025-SladkyEtAl-PSC.pdf">PDF</a>).</span></li>
       <li><span class="date">Jul 2025</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> presents FMSI at <a href="https://www.iscb.org/ismbeccb2025">ISMB/ECCB 2025</a>, Liverpool.</span></li>
     </ul>
     <details class="older">
@@ -148,7 +152,7 @@ h2{margin-top:42px}
         <li><span class="date">Jun 2024</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> defends his <a href="https://dspace.cuni.cz/handle/20.500.11956/192064">bachelor thesis</a>.</span></li>
         <li><span class="date">May 2024</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> wins 1st place in the Theoretical CS &amp; ML section of <a href="https://svoc2024.prf.upol.cz/">SVOČ 2024</a> (Czech-Slovak contest of best undergraduate theses).</span></li>
         <li><span class="date">Feb 2024</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> presents at <a href="https://sites.google.com/view/sequences2024/">Sequences 2024</a>, London.</span></li>
-        <li><span class="date">Apr 2023</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> presents <a href="https://doi.org/10.1101/2023.02.01.526717">masked superstrings</a> at <a href="https://recomb-seq.github.io/history/2023/program">RECOMB-Seq 2023</a>, Istanbul.</span></li>
+        <li><span class="date">Apr 2023</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> presents <a href="https://doi.org/10.1101/2023.02.01.526717">masked superstrings</a> at <a href="https://recomb-seq.github.io/history/2023/program">RECOMB-Seq 2023</a>, Istanbul (<a href="https://brinda.eu/papers/2023-SladkyEtAl-RECOMBSeq.pdf">PDF</a>).</span></li>
       </ul>
     </details>
   </section>
@@ -172,15 +176,15 @@ h2{margin-top:42px}
   </section>
   <section id="papers">
     <h2>Papers</h2>
-    <article class="project c-red" id="ms">
+    <article class="project c-red featured" id="ms">
       <div class="figure" aria-hidden="true"><svg viewBox="0 0 110 80" aria-hidden="true"><text x="10" y="14" font-size="13">ACG</text><text x="18" y="29" font-size="13">CGT</text><text x="26" y="44" font-size="13">GTA</text><path d="M8 50H102" fill="none" opacity=".5"/><text x="10" y="69" font-size="13">ACGT<tspan opacity=".55">a</tspan></text></svg></div>
       <div>
-        <div class="tag">Construction</div>
+        <div class="tag">Representation · Construction · Main paper</div>
         <h3><a href="https://doi.org/10.1101/2023.02.01.526717">Masked superstrings as a unified framework for textual <i>k</i>-mer set representations</a></h3>
         <div class="authors">Ondřej Sladký, Pavel Veselý, and Karel Břinda</div>
         <div class="venue"><em>RECOMB-Seq 2023; bioRxiv, 2023</em></div>
         <div class="doi">DOI: <a href="https://doi.org/10.1101/2023.02.01.526717">10.1101/2023.02.01.526717</a></div>
-        <p class="description">The original masked superstring framework, its computational complexity, and greedy construction algorithms implemented in KmerCamel.</p>
+        <p class="description">The original masked superstring framework, which unifies textual <i>k</i>-mer set representations such as simplitigs and matchtigs, together with its computational complexity and greedy construction algorithms implemented in KmerCamel.</p>
         <div class="links">
           <a href="https://brinda.eu/papers/2023-SladkyEtAl-RECOMBSeq.pdf">PDF</a>
           <a href="https://doi.org/10.1101/2023.02.01.526717">Preprint</a>
