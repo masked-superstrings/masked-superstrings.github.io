@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Research and software for masked superstrings: construction, compression, indexing and k-mer set operations.">
+  <title>Masked superstrings</title>
+  <style>
+:root{color-scheme:light dark;--bg:#fff;--text:#444;--heading:#043361;--link:#267cb9;--muted:#777;--line:#e7e7e7;--soft:#f7f8fa}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 Georgia,'Times New Roman',serif}main,footer{max-width:850px;margin:auto;padding:0 28px}header{padding:55px 0 25px;border-bottom:1px solid var(--line)}nav{display:flex;gap:22px;flex-wrap:wrap;font-size:15px}h1,h2,h3{color:var(--heading);font-weight:600;line-height:1.25}h1{font-size:38px;margin:30px 0 8px}h2{font-size:25px;margin:35px 0 13px}h3{font-size:18px;margin:0 0 4px}a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible{outline:2px solid var(--link);outline-offset:3px}.subtitle{color:var(--muted);margin:0 0 18px}.sequence{font:600 25px/1.5 ui-monospace,monospace;letter-spacing:2px;color:var(--heading);margin:16px 0}.sequence span{color:var(--muted);font-weight:400}.example{background:var(--soft);padding:12px 17px;border-radius:3px;font-size:14px}.example code{font-family:ui-monospace,monospace}.news{padding-left:20px}.news li{margin:6px 0}.date{font-weight:bold;color:var(--heading)}.project{display:grid;grid-template-columns:125px 1fr;gap:22px;padding:17px 0;border-bottom:1px solid var(--line)}.figure{background:var(--soft);min-height:84px;display:grid;place-items:center;color:var(--heading);font:600 15px ui-monospace,monospace;text-align:center;padding:10px}.project p{margin:3px 0 7px}.links{font-size:14px}.links a{margin-right:12px}.tag{font-size:13px;color:var(--muted)}footer{margin:35px auto 0;padding-bottom:28px;font-size:13px;color:var(--muted)}@media(max-width:560px){main,footer{padding-left:20px;padding-right:20px}header{padding-top:25px}h1{font-size:30px}.project{grid-template-columns:1fr;gap:8px}.figure{min-height:48px;justify-content:start}.sequence{font-size:20px}}@media(prefers-color-scheme:dark){:root{--bg:#181a1d;--text:#d3d5d8;--heading:#b9d8f5;--link:#85bff0;--muted:#a5a9af;--line:#383c42;--soft:#23272c}}
+
+.project h3{font-size:18px;font-weight:600}.authors{font-size:15px;margin:3px 0}.venue{font-size:15px;color:var(--muted)}.figure svg{width:100%;max-width:110px;height:auto;display:block}.figure svg text{fill:currentColor;font-family:ui-monospace,monospace}.figure svg path,.figure svg line,.figure svg circle{stroke:currentColor}.project:last-of-type{border-bottom:0}.links{display:flex;flex-wrap:wrap;gap:0 12px}.links a{margin:0}.figure{align-self:start;min-height:90px}.research-intro{margin-top:0}.project .description{margin:7px 0}.example code{white-space:normal} @media(max-width:560px){.project{grid-template-columns:1fr}.figure{justify-content:center}.figure svg{max-width:110px}}</style>
+</head>
+<body>
+<main>
+  <header>
+    <nav aria-label="Main navigation">
+      <a href="#news">News</a>
+      <a href="#research">Research</a>
+      <a href="https://github.com/masked-superstrings">GitHub ↗</a>
+    </nav>
+    <h1>Masked superstrings</h1>
+    <p class="subtitle">Algorithms and data structures for k-mer sets</p>
+    <div class="sequence" aria-hidden="true">ACG<span>t</span>A<span>ca</span></div>
+    <p>Masked superstrings represent sets of <i>k</i>-mers using a string together with a mask that identifies the starting positions of selected <i>k</i>-mers. They provide a framework for compact representations, efficient indexing and operations on genomic data.</p>
+    <div class="example"><strong>Example (<i>k</i> = 3).</strong> <code>ACGtAca</code> represents <code>{ACG, CGT, GTA, ACA}</code>, using uppercase letters to mark selected starting positions.</div>
+  </header>
+  <section id="news">
+    <h2>News</h2>
+    <ul class="news">
+      <li><span class="date">[Nov 2026]</span> The <a href="https://github.com/masked-superstrings">masked-superstrings GitHub organization</a> brings together our software and research repositories.</li>
+      <li><span class="date">[Oct 2026]</span> Our paper on <a href="https://doi.org/10.1177/15578666261491601">Pareto optimization of masked superstrings</a> is published in the <i>Journal of Computational Biology</i>.</li>
+    </ul>
+  </section>
+  <section id="research">
+    <h2>Research</h2>
+    <article class="project" id="ms">
+      <div class="figure" aria-hidden="true"><svg viewBox="0 0 110 80" aria-hidden="true"><text x="10" y="14" font-size="13">ACG</text><text x="18" y="29" font-size="13">CGT</text><text x="26" y="44" font-size="13">GTA</text><path d="M8 50H102" fill="none" opacity=".5"/><text x="10" y="69" font-size="13">ACGT<tspan opacity=".55">a</tspan></text></svg></div>
+      <div>
+        <div class="tag">Construction</div>
+        <h3><a href="https://doi.org/10.1101/2023.02.01.526717">Masked superstrings as a unified framework for textual <i>k</i>-mer set representations</a></h3>
+        <div class="authors">Ondřej Sladký, Pavel Veselý, and Karel Břinda</div>
+        <div class="venue"><em>RECOMB-Seq 2023; bioRxiv, 2023</em></div>
+        <p class="description">The original masked superstring framework, its computational complexity, and greedy construction algorithms implemented in KmerCamel.</p>
+        <div class="links">
+          <a href="https://doi.org/10.1101/2023.02.01.526717">[Preprint]</a>
+          <a href="https://github.com/masked-superstrings/kmercamel">[KmerCamel]</a>
+          <a href="https://github.com/masked-superstrings/ms-supplement">[Code &amp; data]</a>
+        </div>
+      </div>
+    </article>
+    <article class="project" id="fmsi">
+      <div class="figure" aria-hidden="true"><svg viewBox="0 0 110 80" aria-hidden="true"><text x="55" y="18" text-anchor="middle" font-size="13">ACGtAca</text><text x="55" y="35" text-anchor="middle" font-size="12" opacity=".6">1110100</text><path d="M55 41v12m-4-4 4 4 4-4" fill="none"/><text x="55" y="72" text-anchor="middle" font-size="16">MBWT</text></svg></div>
+      <div>
+        <div class="tag">Indexing</div>
+        <h3><a href="https://doi.org/10.1093/bioadv/vbaf290">FroM Superstring to Indexing: a space-efficient index for unconstrained <i>k</i>-mer sets using the Masked Burrows-Wheeler Transform (MBWT)</a></h3>
+        <div class="authors">Ondřej Sladký, Pavel Veselý, and Karel Břinda</div>
+        <div class="venue"><em>Bioinformatics Advances 6(1), vbaf290, 2026</em></div>
+        <p class="description">The masked Burrows-Wheeler transform and FMSI index enable memory-efficient exact <i>k</i>-mer membership queries.</p>
+        <div class="links">
+          <a href="https://doi.org/10.1093/bioadv/vbaf290">[Paper]</a>
+          <a href="https://github.com/masked-superstrings/fmsi">[FMSI]</a>
+        </div>
+      </div>
+    </article>
+    <article class="project" id="fms">
+      <div class="figure" aria-hidden="true"><svg viewBox="0 0 110 80" aria-hidden="true"><circle cx="43" cy="31" r="24" fill="currentColor" fill-opacity=".06"/><circle cx="67" cy="31" r="24" fill="currentColor" fill-opacity=".06"/><text x="33" y="35" font-size="12">A</text><text x="72" y="35" font-size="12">B</text><text x="55" y="73" text-anchor="middle" font-size="13">∪  ∩  ∖</text></svg></div>
+      <div>
+        <div class="tag">Set operations</div>
+        <h3><a href="https://www.stringology.org/event/2025/p04.html">Towards efficient <i>k</i>-mer set operations via function-assigned masked superstrings</a></h3>
+        <div class="authors">Ondřej Sladký, Pavel Veselý, and Karel Břinda</div>
+        <div class="venue"><em>Prague Stringology Conference (PSC), pp. 26–40, 2025</em></div>
+        <p class="description">Function-assigned masked superstrings generalize masking with demasking functions and support set operations through index merging.</p>
+        <div class="links">
+          <a href="https://www.stringology.org/event/2025/p04.html">[Paper]</a>
+          <a href="https://doi.org/10.1101/2024.03.06.583483">[Preprint]</a>
+          <a href="https://github.com/masked-superstrings/fmsi">[FMSI]</a>
+        </div>
+      </div>
+    </article>
+    <article class="project" id="pareto">
+      <div class="figure" aria-hidden="true"><svg viewBox="0 0 110 80" aria-hidden="true"><path d="M12 7V65H104" fill="none" opacity=".6"/><path d="M24 15L38 37L62 48L94 55" fill="none" stroke-width="2"/><g fill="currentColor"><circle cx="24" cy="15" r="2.6"/><circle cx="38" cy="37" r="2.6"/><circle cx="62" cy="48" r="2.6"/><circle cx="94" cy="55" r="2.6"/></g><g fill="currentColor" opacity=".25"><circle cx="60" cy="18" r="2.5"/><circle cx="83" cy="30" r="2.5"/></g><text x="57" y="77" text-anchor="middle" font-size="9">Pareto front</text></svg></div>
+      <div>
+        <div class="tag">Compression</div>
+        <h3><a href="https://doi.org/10.1177/15578666261491601">Pareto optimization of masked superstrings improves compression of pan-genome <i>k</i>-mer sets</a></h3>
+        <div class="authors">Ján Plachý, Ondřej Sladký, Karel Břinda, and Pavel Veselý</div>
+        <div class="venue"><em>Journal of Computational Biology, 2026</em></div>
+        <p class="description">Optimizing the trade-off between superstring and mask properties for more compact pan-genomic <i>k</i>-mer set representations.</p>
+        <div class="links">
+          <a href="https://doi.org/10.1177/15578666261491601">[Paper]</a>
+          <a href="https://doi.org/10.1101/2026.03.18.712440">[Preprint]</a>
+          <a href="https://github.com/masked-superstrings/pareto-optimization-supplement">[Code &amp; data]</a>
+        </div>
+      </div>
+    </article>
+    <p><a href="https://github.com/masked-superstrings?tab=repositories">All software repositories ↗</a></p>
+  </section>
+</main>
+<footer>
+  Masked superstrings · <a href="https://github.com/masked-superstrings">GitHub</a><br>
+  Design inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.
+</footer>
+</body>
+</html>
