@@ -1,0 +1,201 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap");
+
+:root {
+  --ink: #17211f;
+  --muted: #64716c;
+  --line: #dbe3df;
+  --paper: #f5f7f3;
+  --white: #fff;
+  --green: #245c50;
+  --mint: #d8e9df;
+  --orange: #e88750;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "DM Sans", sans-serif;
+  line-height: 1.6;
+  margin: 0;
+}
+
+a { color: inherit; }
+
+.site-header,
+.site-footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 28px 32px;
+}
+
+.site-header { border-bottom: 1px solid var(--line); }
+
+.brand {
+  align-items: center;
+  display: flex;
+  font-size: .88rem;
+  font-weight: 700;
+  gap: 11px;
+  letter-spacing: -.01em;
+  text-decoration: none;
+}
+
+.brand-mark {
+  align-items: center;
+  background: var(--green);
+  border-radius: 50%;
+  color: var(--white);
+  display: flex;
+  font-family: "DM Mono", monospace;
+  font-size: .78rem;
+  height: 34px;
+  justify-content: center;
+  letter-spacing: -.17em;
+  padding-right: 4px;
+  width: 34px;
+}
+
+.brand-mark span { color: var(--orange); }
+
+nav { display: flex; gap: 30px; }
+
+nav a,
+.eyebrow,
+.card-number,
+.visual-label {
+  font-family: "DM Mono", monospace;
+  text-transform: uppercase;
+}
+
+nav a {
+  color: var(--muted);
+  font-size: .69rem;
+  letter-spacing: .06em;
+  text-decoration: none;
+}
+
+nav a:hover, nav a:focus-visible { color: var(--green); }
+
+.hero,
+.section,
+.callout {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.hero {
+  align-items: center;
+  display: grid;
+  gap: 70px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, .7fr);
+  min-height: 590px;
+  padding-bottom: 80px;
+  padding-top: 85px;
+}
+
+.eyebrow {
+  color: var(--green);
+  font-size: .67rem;
+  font-weight: 500;
+  letter-spacing: .13em;
+  margin: 0 0 22px;
+}
+
+h1, h2, h3, p { margin-top: 0; }
+
+h1 {
+  font-size: clamp(3.1rem, 6vw, 5.65rem);
+  letter-spacing: -.075em;
+  line-height: .99;
+  margin-bottom: 28px;
+  max-width: 720px;
+}
+
+h1 em, h2 em { color: var(--green); font-family: "Playfair Display", serif; font-weight: 600; }
+
+.hero-lede {
+  color: var(--muted);
+  font-size: 1.1rem;
+  max-width: 510px;
+}
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 36px; }
+
+.button {
+  border: 1px solid transparent;
+  border-radius: 2px;
+  display: inline-block;
+  font-size: .77rem;
+  font-weight: 600;
+  padding: 13px 17px;
+  text-decoration: none;
+}
+
+.button-primary { background: var(--green); color: var(--white); }
+.button-primary:hover, .button-primary:focus-visible { background: var(--ink); }
+.button-secondary { border-color: var(--line); }
+.button-secondary:hover, .button-secondary:focus-visible { border-color: var(--green); color: var(--green); }
+.button-light { background: var(--white); color: var(--green); }
+.button-light:hover, .button-light:focus-visible { background: var(--mint); }
+
+.hero-visual { display: flex; justify-content: center; }
+
+.visual-card {
+  background: var(--green);
+  box-shadow: 19px 19px 0 var(--mint);
+  color: var(--white);
+  max-width: 380px;
+  padding: 35px;
+  transform: rotate(3deg);
+  width: 100%;
+}
+
+.visual-label { color: #a9cabd; font-size: .62rem; letter-spacing: .1em; }
+.sequence { font-family: "DM Mono", monospace; font-size: clamp(1.7rem, 4vw, 2.4rem); letter-spacing: .07em; margin: 18px 0 23px; }
+.sequence-muted { color: #d8e9df; }
+.sequence span { color: var(--orange); }
+.visual-divider { border-top: 1px solid #547f73; margin: 24px 0 28px; }
+.visual-dots { display: flex; gap: 7px; }
+.visual-dots i { background: var(--orange); border-radius: 50%; display: block; height: 5px; width: 5px; }
+
+.section { border-top: 1px solid var(--line); display: grid; gap: 70px; grid-template-columns: .8fr 1.2fr; padding-bottom: 115px; padding-top: 95px; }
+.section-heading h2, .callout h2 { font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: -.055em; line-height: 1.08; margin-bottom: 0; }
+.intro-body { color: var(--muted); font-size: 1.02rem; max-width: 570px; }
+.intro-body p + p { margin-top: 22px; }
+.section-heading-wide { grid-column: 1 / -1; }
+.research { display: block; }
+.research-grid { display: grid; gap: 18px; grid-template-columns: repeat(3, 1fr); margin-top: 55px; }
+.research-card { border-top: 2px solid var(--green); padding: 22px 4px; }
+.card-number { color: var(--orange); font-size: .68rem; }
+.research-card h3 { font-size: 1.25rem; margin: 33px 0 10px; }
+.research-card p { color: var(--muted); font-size: .9rem; margin-bottom: 0; max-width: 270px; }
+
+.callout { align-items: end; background: var(--green); color: var(--white); display: flex; justify-content: space-between; margin-bottom: 80px; padding-bottom: 65px; padding-top: 65px; }
+.callout .eyebrow { color: #a9cabd; }
+.callout h2 { max-width: 530px; }
+.callout p:last-child { color: #c2d9d0; margin: 20px 0 0; }
+.site-footer { border-top: 1px solid var(--line); color: var(--muted); font-family: "DM Mono", monospace; font-size: .62rem; letter-spacing: .04em; }
+
+@media (max-width: 720px) {
+  .site-header, .site-footer { padding-left: 20px; padding-right: 20px; }
+  nav { gap: 14px; }
+  nav a { font-size: .6rem; }
+  .hero, .section, .callout { padding-left: 20px; padding-right: 20px; }
+  .hero { display: block; min-height: auto; padding-bottom: 100px; padding-top: 70px; }
+  .hero-visual { margin: 70px 15px 20px 0; }
+  .section { display: block; padding-bottom: 78px; padding-top: 70px; }
+  .intro-body { margin-top: 35px; }
+  .research-grid { grid-template-columns: 1fr; margin-top: 35px; }
+  .callout { align-items: start; display: block; margin-bottom: 45px; padding-bottom: 45px; padding-top: 45px; }
+  .callout .button { margin-top: 30px; }
+  .site-footer { align-items: start; flex-direction: column; gap: 8px; padding-bottom: 22px; padding-top: 22px; }
+}

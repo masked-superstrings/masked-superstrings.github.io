@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Masked Superstrings — computational tools and research for masked superstring problems.">
+    <title>Masked Superstrings</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Masked Superstrings home">
+        <span class="brand-mark" aria-hidden="true">M<span>S</span></span>
+        <span>Masked Superstrings</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#about">About</a>
+        <a href="#research">Research</a>
+        <a href="#resources">Resources</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Computational combinatorics</p>
+          <h1>Finding structure in <em>masked</em> superstrings.</h1>
+          <p class="hero-lede">
+            A research project exploring algorithms, constructions, and experiments
+            for superstrings with partially specified symbols.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#about">Explore the project <span aria-hidden="true">↓</span></a>
+            <a class="button button-secondary" href="https://github.com/masked-superstrings/masked-superstrings.github.io">View on GitHub <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="visual-card">
+            <div class="visual-label">masked input</div>
+            <div class="sequence sequence-muted">A <span>?</span> C <span>?</span> G</div>
+            <div class="visual-divider"></div>
+            <div class="visual-label">shortest superstring</div>
+            <div class="sequence">A <span class="accent">T</span> C <span class="accent">A</span> G</div>
+            <div class="visual-dots"><i></i><i></i><i></i></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section intro" id="about" aria-labelledby="about-title">
+        <div class="section-heading">
+          <p class="eyebrow">01 / The project</p>
+          <h2 id="about-title">From incomplete patterns to rigorous solutions.</h2>
+        </div>
+        <div class="intro-body">
+          <p>
+            The shortest common superstring problem asks for the smallest string
+            containing a collection of strings as substrings. The masked variant
+            adds uncertainty: some positions are unknown, and a solution must
+            account for every valid completion.
+          </p>
+          <p>
+            This project brings together theory and computation to understand that
+            uncertainty—developing reproducible methods, testing conjectures, and
+            sharing results with the research community.
+          </p>
+        </div>
+      </section>
+
+      <section class="section research" id="research" aria-labelledby="research-title">
+        <div class="section-heading section-heading-wide">
+          <p class="eyebrow">02 / Research areas</p>
+          <h2 id="research-title">Questions worth pursuing.</h2>
+        </div>
+        <div class="research-grid">
+          <article class="research-card">
+            <span class="card-number">01</span>
+            <h3>Algorithms</h3>
+            <p>Designing practical approaches for finding and verifying short masked superstrings.</p>
+          </article>
+          <article class="research-card">
+            <span class="card-number">02</span>
+            <h3>Complexity</h3>
+            <p>Characterising the computational difficulty of uncertainty in string reconstruction.</p>
+          </article>
+          <article class="research-card">
+            <span class="card-number">03</span>
+            <h3>Experiments</h3>
+            <p>Using open implementations and benchmark instances to turn ideas into evidence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="callout" id="resources" aria-labelledby="resources-title">
+        <div>
+          <p class="eyebrow">03 / Stay connected</p>
+          <h2 id="resources-title">Follow the work as it develops.</h2>
+          <p>Code, data, and updates will be shared openly as the project grows.</p>
+        </div>
+        <a class="button button-light" href="https://github.com/masked-superstrings">Visit the organisation <span aria-hidden="true">↗</span></a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>© <span id="year">2026</span> Masked Superstrings</span>
+      <span>Open research · Reproducible methods</span>
+    </footer>
+  </body>
+</html>
