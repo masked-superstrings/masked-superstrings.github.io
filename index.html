@@ -8,7 +8,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2212%22%20fill%3D%22%23BC3C29%22/%3E%3Cpath%20d%3D%22M9%2042C15%2042%2015%2018%2023%2018S30%2035%2032%2035S34%2018%2041%2018S49%2042%2055%2042%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Masked superstrings">
-  <meta property="og:description" content="Algorithms and data structures for k-mer sets: construction, compression, indexing and set operations.">
+  <meta property="og:description" content="Compact data structures for arbitrary k-mer set representation: construction, compression, indexing and set operations.">
   <meta property="og:url" content="https://masked-superstrings.github.io/">
   <style>
 :root{color-scheme:light;--bg:#fff;--text:#3a3f46;--heading:#0a3a5c;--link:#0072B5;--link-hover:#004f7d;--muted:#6b7178;--faint:#9aa1a9;--line:#e6e8eb;--soft:#f4f6f8;--tile:#e3eef6;
@@ -31,24 +31,92 @@ h2{font-size:24px;letter-spacing:-.005em;margin:52px 0 18px}
 h3{font-size:18px;margin:0 0 6px}
 
 /* Header */
-header{padding:36px 0 36px;border-bottom:1px solid var(--line)}
+header{padding:36px 0 4px}
 nav{display:flex;flex-wrap:wrap;gap:6px 26px;font:500 12.5px/1.4 var(--sans);letter-spacing:.08em;text-transform:uppercase}
 nav a{color:var(--muted)}
 nav a:hover{color:var(--link);text-decoration:none}
 .subtitle{margin:0 0 22px;color:var(--muted);font-size:19px;font-style:italic}
-.sequence{font:600 26px/1.4 var(--mono);letter-spacing:.14em;color:var(--nejm-red);margin:0 0 18px}
-.sequence span{color:var(--faint);font-weight:400}
 header p{margin:0 0 18px}
-.example{background:var(--soft);border-left:3px solid var(--nejm-blue);border-radius:0 4px 4px 0;padding:12px 16px;font-size:14.5px;line-height:1.6}
-.example code{white-space:normal}
+
+/* Concept figure (adapted from Fig. 1 of the paper) */
+.panel{background:var(--soft);border-radius:8px;padding:12px 14px 10px}
+.panel-title{font:600 12.5px/1.4 var(--sans);color:var(--heading);margin:0 0 9px}
+.panel-title b{display:inline-block;min-width:1.2em;color:var(--nejm-red)}
+.panel-title .set{font:400 12px/1.4 var(--mono);color:var(--text)}
+.caption{margin:6px 0 0;font:12px/1.5 var(--sans);color:var(--muted)}
+.caption summary{display:inline-block;cursor:pointer;list-style:none;color:var(--link);font-weight:500}
+.caption summary::-webkit-details-marker{display:none}
+.caption summary::before{content:"▸";display:inline-block;width:1em;transition:transform .15s}
+.caption[open] summary::before{transform:rotate(90deg)}
+.caption p{margin:4px 0 0}
+.mono{font-family:var(--mono)}
+.nw{white-space:nowrap}
+.mrow{display:grid;grid-template-columns:76px 1fr;align-items:baseline;column-gap:8px;font:11.5px/1.75 var(--sans);color:var(--muted);padding:0 9px}
+.mbox{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:3px 0;margin:0 0 4px}
+.seq,.mask{font:12.5px/1.5 var(--mono);letter-spacing:.05em;white-space:nowrap}
+.seq{font-weight:600;color:var(--c,var(--text))}
+.mask{color:var(--faint)}
+.mask b{color:var(--text);font-weight:600}
+.mask .tail{color:#c3c8ce}
+.seq i,.mask i{font-style:normal;margin-right:4px}
+.seq i:last-child,.mask i:last-child{margin-right:0}
+.covers{display:grid;grid-template-columns:auto 1fr auto;align-items:center;column-gap:12px}
+.covers>*{padding:4px 0;border-top:1px solid var(--line)}
+.covers>:nth-child(-n+3){border-top:0}
+.covers .name{font:600 11.5px/1.3 var(--sans);color:var(--c)}
+.covers .len{font:11.5px/1 var(--sans);color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}
+.k-kmers{--c:var(--text)}
+.k-unitigs{--c:var(--nejm-purple)}
+.k-simplitigs{--c:var(--nejm-green)}
+.k-matchtigs{--c:var(--nejm-blue)}
+.k-shortest{--c:var(--nejm-red)}
+/* Hero graphic */
+.msg{display:grid;grid-template-columns:auto 1fr;gap:10px 28px;align-items:center;background:var(--soft);border-radius:10px;padding:14px 18px;margin:4px 0 0}
+.stair{font:13px/1.32 var(--mono);white-space:pre;color:var(--text)}
+.stair .r{display:block}
+.stair .lab{display:inline-block;width:106px;font:11.5px/1.32 var(--sans);color:var(--muted);white-space:nowrap}
+.stair .ss{font-weight:600;color:var(--nejm-red);letter-spacing:0}
+.stair .mk b{font-weight:600}
+.stair .mk .z{color:var(--faint)}
+.stair .rule{display:block;height:1px;background:var(--line);margin:4px 0 4px 106px;width:10ch}
+.stair .on{color:var(--nejm-blue);font-weight:600}
+.stair .off{color:var(--faint);text-decoration:line-through}
+.stair .kset{display:flex;align-items:baseline}
+.stair .kset .lab{flex:none;white-space:normal}
+.stair .kels{display:flex;flex-wrap:wrap;gap:3px 5px;white-space:normal;min-width:0}
+.stair .kel{background:#e3eef6;color:var(--nejm-blue);font-weight:600;border-radius:4px;padding:0 4px}
+.stair .arrow{color:var(--nejm-red);font:700 24px/1 var(--sans);padding:4px 0 4px 30px}
+.stair .arrow .lab{font-size:11.5px}
+.stair .why{font:11px/1.32 var(--sans);color:var(--faint);margin-left:10px}
+.legend{font:13px/1.55 var(--sans);color:var(--muted);max-width:340px}
+.legend p{margin:0 0 6px}
+.legend p:last-child{margin:0}
+.legend .on{color:var(--nejm-blue);font-weight:600;font-family:var(--mono)}
+/* Paper sections */
+.sections{margin:0;display:grid;gap:6px}
+.sec{border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.sec>summary{cursor:pointer;list-style:none;padding:8px 14px;font:600 14px/1.4 var(--sans);color:var(--heading);display:flex;gap:8px;align-items:baseline}
+.sec>summary::-webkit-details-marker{display:none}
+.sec>summary::before{content:"▸";color:var(--faint);font-size:11px;transition:transform .15s;display:inline-block}
+.sec[open]>summary::before{transform:rotate(90deg)}
+.sec>summary:hover{color:var(--link)}
+.sec[open]{background:var(--soft);border-color:var(--soft)}
+.sec .body{padding:0 16px 12px 31px;font-size:14.5px;line-height:1.6}
+.sec .body p{margin:0 0 8px}
+.sec .body p:last-child{margin-bottom:0}
+.whatis{background:#f7e7e4;border-radius:10px;padding:12px 14px 14px;margin-bottom:4px}
+.whatis-title{font:600 15px/1.4 var(--sans);color:var(--nejm-red);margin:0 0 10px 4px}
+.whatis .msg{background:var(--bg);margin:0}
+.sec .covers{margin:6px 0 8px;background:var(--bg);border-radius:8px;padding:4px 12px}
 
 /* News */
-.news{list-style:none;margin:0;padding:0;font-size:14px;line-height:1.55}
-.news li{display:grid;grid-template-columns:76px 1fr;gap:14px;padding:3px 0}
-.news .date{font:12.5px/21.7px var(--sans);color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+#news h2{margin:36px 0 12px}
+.news{list-style:none;margin:0;padding:0;font-size:13.5px;line-height:1.45}
+.news li{display:grid;grid-template-columns:70px 1fr;gap:12px;padding:1px 0}
+.news .date{font:12px/19.6px var(--sans);color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 .news code{font-size:12px}
-.older{margin-top:6px}
-.older summary{display:inline-block;cursor:pointer;list-style:none;font:500 12.5px/1.4 var(--sans);letter-spacing:.04em;color:var(--link);padding:4px 0;margin-left:90px}
+.older{margin-top:2px}
+.older summary{display:inline-block;cursor:pointer;list-style:none;font:500 12px/1.4 var(--sans);letter-spacing:.04em;color:var(--link);padding:2px 0;margin-left:82px}
 .older summary::-webkit-details-marker{display:none}
 .older summary::before{content:"▸";display:inline-block;width:1em;transition:transform .15s}
 .older[open] summary::before{transform:rotate(90deg)}
@@ -71,7 +139,7 @@ header p{margin:0 0 18px}
 /* Research */
 .project{display:grid;grid-template-columns:132px 1fr;gap:26px;padding:24px 0;border-top:1px solid var(--line)}
 .project:first-of-type{border-top:0;padding-top:4px}
-.project.featured{background:#fcf6f4;border-left:3px solid var(--accent);border-radius:0 6px 6px 0;padding:22px 22px 22px 19px;margin-bottom:10px}
+.project.featured{background:#fcf6f4;border:2px solid var(--accent);border-radius:10px;padding:20px;margin-bottom:10px}
 .project.featured+.project{border-top:0}
 .featured .figure{background:#fff}
 .figure{background:var(--accent-bg,var(--tile));border-radius:6px;color:var(--accent,var(--heading));display:grid;place-items:center;align-self:start;aspect-ratio:11/8;padding:12px}
@@ -102,12 +170,16 @@ header{padding-top:24px}
 h1{font-size:32px;margin-top:30px}
 h2{margin-top:42px}
 .subtitle{font-size:17px}
-.sequence{font-size:21px}
+.msg{grid-template-columns:1fr;padding:12px 14px}
+.stair .lab{width:78px}
+.stair .rule{margin-left:78px}
+.sec .body{padding:0 12px 12px 14px}
+.msg .legend{max-width:none}
 .news li{grid-template-columns:64px 1fr;gap:10px}
 .older summary{margin-left:74px}
 .tool{grid-template-columns:72px 1fr;gap:16px}
 .project{grid-template-columns:1fr;gap:12px}
-.project.featured{padding:18px 16px 18px 15px}
+.project.featured{padding:16px 14px}
 .figure{aspect-ratio:auto;min-height:96px}
 .figure svg{max-width:120px}
 }
@@ -118,16 +190,14 @@ h2{margin-top:42px}
   <header>
     <nav aria-label="Main navigation">
       <a href="#news">News</a>
+      <a href="#about">About</a>
       <a href="#software">Software</a>
       <a href="#papers">Papers</a>
       <a href="#people">People</a>
       <a href="https://github.com/masked-superstrings">GitHub ↗</a>
     </nav>
     <h1>Masked superstrings</h1>
-    <p class="subtitle">Algorithms and data structures for <i>k</i>-mer sets</p>
-    <div class="sequence" aria-hidden="true">ACG<span>t</span>A<span>ca</span></div>
-    <p>Masked superstrings represent sets of <i>k</i>-mers using a string together with a mask that identifies the starting positions of selected <i>k</i>-mers. They provide a framework for compact representations, efficient indexing and operations on genomic data.</p>
-    <div class="example"><strong>Example (<i>k</i> = 3).</strong> <code>ACGtAca</code> represents <code>{ACG, CGT, GTA, ACA}</code>, using uppercase letters to mark selected starting positions.</div>
+    <p class="subtitle">Compact data structures for arbitrary <span class="nw"><i>k</i>-mer</span> set representation</p>
   </header>
   <section id="news">
     <h2>News</h2>
@@ -136,14 +206,14 @@ h2{margin-top:42px}
       <li><span class="date">Oct 2026</span> <span><a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a> by Ragnar Groot Koerkamp supports parallel masked superstring construction (<a href="https://curiouscoding.nl/posts/pandedup-log/">blog post</a>).</span></li>
       <li><span class="date">May 2026</span> <span><a href="https://kam.mff.cuni.cz/~janci/">Ján</a> presents <a href="https://doi.org/10.1177/15578666261491601">Pareto optimization</a> at <a href="https://recomb-seq.github.io/seq2026/program">RECOMB-Seq 2026</a>, Thessaloniki (<a href="https://brinda.eu/papers/2026-PlachyEtAl-JCB.pdf">PDF</a>).</span></li>
       <li><span class="date">Apr 2026</span> <span><a href="https://www.matfyz.cz/clanky/maskovane-nadretezce-oteviraji-novou-kapitolu-bioinformatiky">Interview</a> with <a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> on Matfyz.cz (in Czech).</span></li>
-      <li><span class="date">Nov 2025</span> <span><a href="https://doi.org/10.1093/bioadv/vbaf290">FMSI</a> published in <i>Bioinformatics Advances</i> (<a href="https://brinda.eu/papers/2026-SladkyEtAl-BioinformAdv.pdf">PDF</a>).</span></li>
-      <li><span class="date">Sep 2025</span> <span><a href="https://kam.mff.cuni.cz/~janci/">Ján</a> defends his <a href="https://dspace.cuni.cz/handle/20.500.11956/204030">bachelor thesis</a>.</span></li>
-      <li><span class="date">Aug 2025</span> <span><a href="https://www.stringology.org/event/2025/p04.html">Function-assigned masked superstrings</a> published at PSC 2025 (<a href="https://brinda.eu/papers/2025-SladkyEtAl-PSC.pdf">PDF</a>).</span></li>
-      <li><span class="date">Jul 2025</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> presents FMSI at <a href="https://www.iscb.org/ismbeccb2025">ISMB/ECCB 2025</a>, Liverpool.</span></li>
     </ul>
     <details class="older">
       <summary>Older news</summary>
       <ul class="news">
+        <li><span class="date">Nov 2025</span> <span><a href="https://doi.org/10.1093/bioadv/vbaf290">FMSI</a> published in <i>Bioinformatics Advances</i> (<a href="https://brinda.eu/papers/2026-SladkyEtAl-BioinformAdv.pdf">PDF</a>).</span></li>
+        <li><span class="date">Sep 2025</span> <span><a href="https://kam.mff.cuni.cz/~janci/">Ján</a> defends his <a href="https://dspace.cuni.cz/handle/20.500.11956/204030">bachelor thesis</a>.</span></li>
+        <li><span class="date">Aug 2025</span> <span><a href="https://www.stringology.org/event/2025/p04.html">Function-assigned masked superstrings</a> published at PSC 2025 (<a href="https://brinda.eu/papers/2025-SladkyEtAl-PSC.pdf">PDF</a>).</span></li>
+        <li><span class="date">Jul 2025</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> presents FMSI at <a href="https://www.iscb.org/ismbeccb2025">ISMB/ECCB 2025</a>, Liverpool.</span></li>
         <li><span class="date">May 2025</span> <span><a href="https://kam.mff.cuni.cz/~janci/">Ján</a> wins 1st place in the Theoretical CS &amp; AI section of <a href="https://www.jcmf.cz/sites/default/files/VL25.pdf">SVOČ 2025</a> (Czech-Slovak contest of best undergraduate theses).</span></li>
         <li><span class="date">Apr 2025</span> <span><a href="https://iuuk.mff.cuni.cz/~vesely/">Pavel</a> presents masked superstrings at <a href="https://recomb-seq.github.io/history/2025/program/">RECOMB-Seq 2025</a> (talk) and <a href="https://recomb.org/recomb2025/posters.html">RECOMB 2025</a> (poster), Seoul.</span></li>
         <li><span class="date">Mar 2025</span> <span><a href="https://brinda.eu">Karel</a> presents masked superstrings at <a href="https://dsb-meeting.github.io/DSB2025/">DSB 2025</a>, Pisa.</span></li>
@@ -155,6 +225,44 @@ h2{margin-top:42px}
         <li><span class="date">Apr 2023</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> presents <a href="https://doi.org/10.1101/2023.02.01.526717">masked superstrings</a> at <a href="https://recomb-seq.github.io/history/2023/program">RECOMB-Seq 2023</a>, Istanbul (<a href="https://brinda.eu/papers/2023-SladkyEtAl-RECOMBSeq.pdf">PDF</a>).</span></li>
       </ul>
     </details>
+  </section>
+  <section id="about">
+    <h2>About</h2>
+    <div class="sections">
+      <div class="whatis">
+        <div class="whatis-title">What are masked superstrings?</div>
+        <div class="msg" role="img" aria-label="Masked superstring GGACCGACTT with mask 1110101100 representing the k-mers GGA, GAC, ACC, CGA, ACT and CTT">
+          <div class="stair" aria-hidden="true"><span class="r kset"><span class="lab"><i>k</i>-mer set (<i>k</i>&nbsp;=&nbsp;3)</span><span class="kels"><span class="kel">GGA</span><span class="kel">ACC</span><span class="kel">CGA</span><span class="kel">GAC</span><span class="kel">ACT</span><span class="kel">CTT</span></span></span><span class="r arrow"><span class="lab"></span>↓</span><span class="r"><span class="lab">superstring</span><span class="ss">GGACCGACTT</span></span><span class="r"><span class="lab">mask</span><span class="mk"><b>1</b><b>1</b><b>1</b><span class="z">0</span><b>1</b><span class="z">0</span><b>1</b><b>1</b><span class="z">0</span><span class="z">0</span></span></span><span class="rule"></span><span class="r"><span class="lab">occurrences</span></span><span class="r"><span class="lab"></span><span class="on">GGA</span></span><span class="r"><span class="lab"></span> <span class="on">GAC</span></span><span class="r"><span class="lab"></span>  <span class="on">ACC</span></span><span class="r"><span class="lab"></span>   <span class="off">CCG</span><span class="why">not in the set</span></span><span class="r"><span class="lab"></span>    <span class="on">CGA</span></span><span class="r"><span class="lab"></span>     <span class="off">GAC</span><span class="why">duplicate</span></span><span class="r"><span class="lab"></span>      <span class="on">ACT</span></span><span class="r"><span class="lab"></span>       <span class="on">CTT</span></span></div>
+          <div class="legend">
+            <p>A <b>masked superstring</b> is a string containing every <span class="nw"><i>k</i>-mer</span> of a set, plus a binary mask.</p>
+            <p>Each 1 in the mask switches <span class="on">on</span> the <span class="nw"><i>k</i>-mer</span> starting at that position; the other occurrences are ignored.</p>
+            <p>Here, <span class="mono">GGACCGACTT</span> + <span class="mono">1110101100</span> represents {GGA, ACC, CGA, GAC, ACT, CTT}, written in mask-cased form as <span class="mono">GGAcCgACtt</span>.</p>
+          </div>
+        </div>
+      </div>
+      <details class="sec"><summary><span>Masked superstrings generalize SPSS</span></summary><div class="body">
+        <p>Superstrings correspond to paths in the <span class="nw"><i>k</i>-mer</span> overlap graph, of which the de Bruijn graph is the subgraph of (<i>k</i>&nbsp;–&nbsp;1)-overlaps. Concatenating the strings of any SPSS therefore gives a valid masked superstring, and every SPSS construction is a constrained superstring heuristic. Overlaps shorter than <i>k</i>&nbsp;–&nbsp;1 allow even shorter superstrings:</p>
+        <div class="covers">
+          <div class="name k-kmers"><i>k</i>-mers</div><div class="k-kmers"><div class="seq"><i>GGA</i><i>ACC</i><i>CGA</i><i>GAC</i><i>ACT</i><i>CTT</i></div><div class="mask"><i><b>1</b>00</i><i><b>1</b>00</i><i><b>1</b>00</i><i><b>1</b>00</i><i><b>1</b>00</i><i><b>1</b><span class="tail">0</span><span class="tail">0</span></i></div></div><div class="len">18</div>
+          <div class="name k-unitigs">unitigs</div><div class="k-unitigs"><div class="seq"><i>GGA</i><i>ACC</i><i>CGA</i><i>GAC</i><i>ACTT</i></div><div class="mask"><i><b>1</b>00</i><i><b>1</b>00</i><i><b>1</b>00</i><i><b>1</b>00</i><i><b>1</b><b>1</b><span class="tail">0</span><span class="tail">0</span></i></div></div><div class="len">16</div>
+          <div class="name k-simplitigs">simplitigs</div><div class="k-simplitigs"><div class="seq"><i>GGA</i><i>ACC</i><i>CGACTT</i></div><div class="mask"><i><b>1</b>00</i><i><b>1</b>00</i><i><b>1</b><b>1</b><b>1</b><b>1</b><span class="tail">0</span><span class="tail">0</span></i></div></div><div class="len">12</div>
+          <div class="name k-matchtigs">matchtigs</div><div class="k-matchtigs"><div class="seq"><i>GGACC</i><i>CGACTT</i></div><div class="mask"><i><b>1</b><b>1</b><b>1</b>00</i><i><b>1</b><b>1</b><b>1</b><b>1</b><span class="tail">0</span><span class="tail">0</span></i></div></div><div class="len">11</div>
+          <div class="name k-shortest">shortest</div><div class="k-shortest"><div class="seq"><i>GGACCGACTT</i></div><div class="mask"><i><b>1</b><b>1</b><b>1</b>0<b>1</b>0<b>1</b><b>1</b><span class="tail">0</span><span class="tail">0</span></i></div></div><div class="len">10</div>
+        </div>
+        <p>Masks are not unique: they can be chosen to avoid duplicate <span class="nw"><i>k</i>-mers</span> or to make the mask more compressible.</p>
+      </div></details>
+      <details class="sec"><summary><span>Masked superstrings can be easily and efficiently computed</span></summary><div class="body">
+        <p>BiGreedy adapts the classical greedy superstring algorithm to genomic <span class="nw"><i>k</i>-mer</span> sets: it repeatedly merges the two sequences with the longest suffix–prefix overlap, accounting for reverse complements. Because any duplicate-free SPSS is a valid intermediate state, BiGreedy can start from unitigs or simplitigs computed by parallel tools such as GGCAT, adding little time over unitig construction, and the resulting superstrings keep them as retrievable substrings.</p>
+        <p>Across <span class="nw"><i>k</i>-mer</span> sizes, pangenome expansion, abundance filtering and subsampling, BiGreedy superstrings stay very close to a lower bound on superstring length, and are substantially shorter than simplitigs and matchtigs where the de Bruijn graph branches or fragments. BiGreedy is implemented in <a href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a> and, in parallel, in <a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a>.</p>
+      </div></details>
+      <details class="sec"><summary><span>Masked superstrings improve compression</span></summary><div class="body">
+        <p>Compressed masked superstrings (superstring plus mask) are smaller than compressed SPSS and ESS-Compress across genomes, pangenomes and raw-read <span class="nw"><i>k</i>-mer</span> sets, with the largest gains for subsampled sets. Jointly optimizing superstring length and mask further improves the compression of pangenome <span class="nw"><i>k</i>-mer</span> sets (<a href="#pareto">Pareto optimization</a>).</p>
+        <p>The BMS storage format combines a BiGreedy superstring, its mask, unitig boundaries and unitig abundances. On a randomized benchmark of accessions from the Logan archive, it reduced the compressed size of unitigs with abundances several-fold, while recovering them exactly.</p>
+      </div></details>
+      <details class="sec"><summary><span>Masked superstrings improve indexing</span></summary><div class="body">
+        <p>The masked Burrows-Wheeler transform (MBWT) of a masked superstring yields <a href="#fmsi">FMSI</a>, a memory-efficient exact <span class="nw"><i>k</i>-mer</span> index supporting membership queries, compressed dictionary queries, and set operations through <a href="#fms">function-assigned masked superstrings</a>. Because BiGreedy superstrings retain unitigs and simplitigs as substrings, they also integrate with existing SPSS-based indexes such as SSHash.</p>
+      </div></details>
+    </div>
   </section>
   <section id="software">
     <h2>Software</h2>
