@@ -5,22 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Research and software for masked superstrings: construction, compression, indexing and k-mer set operations.">
   <title>Masked superstrings</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2212%22%20fill%3D%22%230b2f57%22/%3E%3Cpath%20d%3D%22M9%2042C15%2042%2015%2018%2023%2018S30%2035%2032%2035S34%2018%2041%2018S49%2042%2055%2042%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Masked superstrings">
+  <meta property="og:description" content="Algorithms and data structures for k-mer sets: construction, compression, indexing and set operations.">
+  <meta property="og:url" content="https://masked-superstrings.github.io/">
   <style>
-:root{color-scheme:light dark;--bg:#fff;--text:#444;--heading:#043361;--link:#267cb9;--muted:#777;--line:#e7e7e7;--soft:#f7f8fa}*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 Georgia,'Times New Roman',serif}main,footer{max-width:850px;margin:auto;padding:0 28px}header{padding:55px 0 25px;border-bottom:1px solid var(--line)}nav{display:flex;gap:22px;flex-wrap:wrap;font-size:15px}h1,h2,h3{color:var(--heading);font-weight:600;line-height:1.25}h1{font-size:38px;margin:30px 0 8px}h2{font-size:25px;margin:35px 0 13px}h3{font-size:18px;margin:0 0 4px}a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible{outline:2px solid var(--link);outline-offset:3px}.subtitle{color:var(--muted);margin:0 0 18px}.sequence{font:600 25px/1.5 ui-monospace,monospace;letter-spacing:2px;color:var(--heading);margin:16px 0}.sequence span{color:var(--muted);font-weight:400}.example{background:var(--soft);padding:12px 17px;border-radius:3px;font-size:14px}.example code{font-family:ui-monospace,monospace}.news{padding-left:20px}.news li{margin:6px 0}.date{font-weight:bold;color:var(--heading)}.project{display:grid;grid-template-columns:125px 1fr;gap:22px;padding:17px 0;border-bottom:1px solid var(--line)}.figure{background:var(--soft);min-height:84px;display:grid;place-items:center;color:var(--heading);font:600 15px ui-monospace,monospace;text-align:center;padding:10px}.project p{margin:3px 0 7px}.links{font-size:14px}.links a{margin-right:12px}.tag{font-size:13px;color:var(--muted)}footer{margin:35px auto 0;padding-bottom:28px;font-size:13px;color:var(--muted)}@media(max-width:560px){main,footer{padding-left:20px;padding-right:20px}header{padding-top:25px}h1{font-size:30px}.project{grid-template-columns:1fr;gap:8px}.figure{min-height:48px;justify-content:start}.sequence{font-size:20px}}@media(prefers-color-scheme:dark){:root{--bg:#181a1d;--text:#d3d5d8;--heading:#b9d8f5;--link:#85bff0;--muted:#a5a9af;--line:#383c42;--soft:#23272c}}
+:root{color-scheme:light;--bg:#fff;--text:#3a3f46;--heading:#0b2f57;--link:#1f6fb2;--link-hover:#0b4f8a;--muted:#6b7178;--faint:#9aa1a9;--line:#e6e8eb;--soft:#f4f6f8;--tile:#e6ebf1;
+--serif:Georgia,'Times New Roman',serif;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 var(--serif);text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+::selection{background:#d4e4f4}
+main,footer{max-width:800px;margin:0 auto;padding:0 32px}
+section{scroll-margin-top:20px}
+a{color:var(--link);text-decoration:none;text-underline-offset:2px}
+a:hover{color:var(--link-hover);text-decoration:underline}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--link);outline-offset:2px;border-radius:2px}
+code{font-family:var(--mono);font-size:.9em}
+h1,h2,h3{color:var(--heading);font-weight:600;line-height:1.25}
+h1{font-size:42px;letter-spacing:-.015em;margin:44px 0 6px}
+h2{font-size:24px;letter-spacing:-.005em;margin:52px 0 18px}
+h3{font-size:18px;margin:0 0 6px}
 
-.project h3{font-size:18px;font-weight:600}.authors{font-size:15px;margin:3px 0}.venue{font-size:15px;color:var(--muted)}.figure svg{width:100%;max-width:110px;height:auto;display:block}.figure svg text{fill:currentColor;font-family:ui-monospace,monospace}.figure svg path,.figure svg line,.figure svg circle{stroke:currentColor}.project:last-of-type{border-bottom:0}.links{display:flex;flex-wrap:wrap;gap:0 12px}.links a{margin:0}.figure{align-self:start;min-height:90px}.research-intro{margin-top:0}.project .description{margin:7px 0}.example code{white-space:normal} @media(max-width:560px){.project{grid-template-columns:1fr}.figure{justify-content:center}.figure svg{max-width:110px}}</style>
+/* Header */
+header{padding:36px 0 36px;border-bottom:1px solid var(--line)}
+nav{display:flex;flex-wrap:wrap;gap:6px 26px;font:500 12.5px/1.4 var(--sans);letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--muted)}
+nav a:hover{color:var(--link);text-decoration:none}
+.subtitle{margin:0 0 22px;color:var(--muted);font-size:19px;font-style:italic}
+.sequence{font:600 26px/1.4 var(--mono);letter-spacing:.14em;color:var(--heading);margin:0 0 18px}
+.sequence span{color:var(--faint);font-weight:400}
+header p{margin:0 0 18px}
+.example{background:var(--soft);border-left:3px solid #c5d3e2;border-radius:0 4px 4px 0;padding:12px 16px;font-size:14.5px;line-height:1.6}
+.example code{white-space:normal}
+
+/* News */
+.news{list-style:none;margin:0;padding:0;font-size:14px;line-height:1.55}
+.news li{display:grid;grid-template-columns:76px 1fr;gap:14px;padding:3px 0}
+.news .date{font:12.5px/21.7px var(--sans);color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.news code{font-size:12px}
+.older{margin-top:6px}
+.older summary{display:inline-block;cursor:pointer;list-style:none;font:500 12.5px/1.4 var(--sans);letter-spacing:.04em;color:var(--link);padding:4px 0;margin-left:90px}
+.older summary::-webkit-details-marker{display:none}
+.older summary::before{content:"▸";display:inline-block;width:1em;transition:transform .15s}
+.older[open] summary::before{transform:rotate(90deg)}
+.older[open] summary{margin-bottom:2px}
+
+/* Software */
+.tool{display:grid;grid-template-columns:88px 1fr;gap:22px;align-items:start;padding:12px 0}
+.tool .icon{background:var(--tile);border-radius:6px;color:var(--heading);padding:8px;line-height:0}
+.tool .icon svg{width:100%;height:auto}
+.tool .icon svg text,.figure svg text{fill:currentColor;font-family:var(--mono)}
+.tool .icon svg text{font-weight:600}
+.tool .icon svg path,.tool .icon svg circle,.figure svg path,.figure svg line,.figure svg circle{stroke:currentColor}
+.tool .name{font-weight:600;font-size:17px}
+.gh-link{display:inline-flex;align-items:center;gap:8px;margin-top:10px;font:500 14px/1.4 var(--sans)}
+.gh-icon{width:18px;height:18px}
+
+/* Links row */
+.links{display:flex;flex-wrap:wrap;gap:2px 16px;margin-top:6px;font:500 13px/1.6 var(--sans)}
+
+/* Research */
+.project{display:grid;grid-template-columns:132px 1fr;gap:26px;padding:24px 0;border-top:1px solid var(--line)}
+.project:first-of-type{border-top:0;padding-top:4px}
+.figure{background:var(--tile);border-radius:6px;color:var(--heading);display:grid;place-items:center;align-self:start;aspect-ratio:11/8;padding:12px}
+.figure svg{width:100%;max-width:110px;height:auto;display:block}
+.tag{font:600 11px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.authors{font-size:15px;margin:2px 0}
+.venue{font-size:15px;color:var(--muted)}
+.doi{font:13px/1.6 var(--sans);color:var(--muted)}
+.description{margin:8px 0 4px}
+
+/* People */
+.people{padding-left:20px;margin:0}
+.people li{margin:5px 0}
+.people .affiliation{color:var(--muted)}
+.people .affiliation::before{content:", "}
+
+/* Footer */
+footer{margin-top:64px;padding-top:22px;padding-bottom:40px;font:13px/1.7 var(--sans);color:var(--muted)}
+footer .inner{border-top:1px solid var(--line);padding-top:20px}
+
+@media (max-width:600px){
+main,footer{padding-left:20px;padding-right:20px}
+header{padding-top:24px}
+h1{font-size:32px;margin-top:30px}
+h2{margin-top:42px}
+.subtitle{font-size:17px}
+.sequence{font-size:21px}
+.news li{grid-template-columns:64px 1fr;gap:10px}
+.older summary{margin-left:74px}
+.tool{grid-template-columns:72px 1fr;gap:16px}
+.project{grid-template-columns:1fr;gap:12px}
+.figure{aspect-ratio:auto;min-height:96px}
+.figure svg{max-width:120px}
+}
+</style>
 </head>
 <body>
 <main>
   <header>
     <nav aria-label="Main navigation">
       <a href="#news">News</a>
-      <a href="#research">Research</a>
+      <a href="#software">Software</a>
+      <a href="#papers">Papers</a>
+      <a href="#people">People</a>
       <a href="https://github.com/masked-superstrings">GitHub ↗</a>
     </nav>
     <h1>Masked superstrings</h1>
-    <p class="subtitle">Algorithms and data structures for k-mer sets</p>
+    <p class="subtitle">Algorithms and data structures for <i>k</i>-mer sets</p>
     <div class="sequence" aria-hidden="true">ACG<span>t</span>A<span>ca</span></div>
     <p>Masked superstrings represent sets of <i>k</i>-mers using a string together with a mask that identifies the starting positions of selected <i>k</i>-mers. They provide a framework for compact representations, efficient indexing and operations on genomic data.</p>
     <div class="example"><strong>Example (<i>k</i> = 3).</strong> <code>ACGtAca</code> represents <code>{ACG, CGT, GTA, ACA}</code>, using uppercase letters to mark selected starting positions.</div>
@@ -28,12 +122,50 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 Georgia,'Tim
   <section id="news">
     <h2>News</h2>
     <ul class="news">
-      <li><span class="date">[Nov 2026]</span> The <a href="https://github.com/masked-superstrings">masked-superstrings GitHub organization</a> brings together our software and research repositories.</li>
-      <li><span class="date">[Oct 2026]</span> Our paper on <a href="https://doi.org/10.1177/15578666261491601">Pareto optimization of masked superstrings</a> is published in the <i>Journal of Computational Biology</i>.</li>
+      <li><span class="date">Oct 2026</span> <span><a href="https://doi.org/10.1177/15578666261491601">Pareto optimization of masked superstrings</a> published in <i>J. Comput. Biol.</i></span></li>
+      <li><span class="date">Oct 2026</span> <span><a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a> by Ragnar Groot Koerkamp supports parallel masked superstring construction (<a href="https://curiouscoding.nl/posts/pandedup-log/">blog post</a>).</span></li>
+      <li><span class="date">May 2026</span> <span><a href="https://kam.mff.cuni.cz/~janci/">Ján</a> presents <a href="https://doi.org/10.1177/15578666261491601">Pareto optimization</a> at <a href="https://recomb-seq.github.io/seq2026/program">RECOMB-Seq 2026</a>, Thessaloniki.</span></li>
+      <li><span class="date">Apr 2026</span> <span><a href="https://www.matfyz.cz/clanky/maskovane-nadretezce-oteviraji-novou-kapitolu-bioinformatiky">Interview</a> with <a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> on Matfyz.cz (in Czech).</span></li>
+      <li><span class="date">Nov 2025</span> <span><a href="https://doi.org/10.1093/bioadv/vbaf290">FMSI</a> published in <i>Bioinformatics Advances</i>.</span></li>
+      <li><span class="date">Sep 2025</span> <span><a href="https://kam.mff.cuni.cz/~janci/">Ján</a> defends his <a href="https://dspace.cuni.cz/handle/20.500.11956/204030">bachelor thesis</a>.</span></li>
+      <li><span class="date">Aug 2025</span> <span><a href="https://www.stringology.org/event/2025/p04.html">Function-assigned masked superstrings</a> published at PSC 2025.</span></li>
+      <li><span class="date">Jul 2025</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> presents FMSI at <a href="https://www.iscb.org/ismbeccb2025">ISMB/ECCB 2025</a>, Liverpool.</span></li>
     </ul>
+    <details class="older">
+      <summary>Older news</summary>
+      <ul class="news">
+        <li><span class="date">May 2025</span> <span><a href="https://kam.mff.cuni.cz/~janci/">Ján</a> wins 1st place in the Theoretical CS &amp; AI section of <a href="https://www.jcmf.cz/sites/default/files/VL25.pdf">SVOČ 2025</a> (Czech-Slovak contest of best undergraduate theses).</span></li>
+        <li><span class="date">Apr 2025</span> <span><a href="https://iuuk.mff.cuni.cz/~vesely/">Pavel</a> presents masked superstrings at <a href="https://recomb-seq.github.io/history/2025/program/">RECOMB-Seq 2025</a> (talk) and <a href="https://recomb.org/recomb2025/posters.html">RECOMB 2025</a> (poster), Seoul.</span></li>
+        <li><span class="date">Mar 2025</span> <span><a href="https://brinda.eu">Karel</a> presents masked superstrings at <a href="https://dsb-meeting.github.io/DSB2025/">DSB 2025</a>, Pisa.</span></li>
+        <li><span class="date">Dec 2024</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> receives the <a href="https://www.mff.cuni.cz/cs/verejnost/aktuality/oceneni-pro-nejlepsi-bakalarske-a-diplomove-prace-2023-2024">Dean's Prize</a> for the best Computer Science bachelor thesis at the Faculty of Mathematics and Physics, Charles University.</span></li>
+        <li><span class="date">Nov 2024</span> <span><a href="https://brinda.eu">Karel</a> presents masked superstrings at <a href="https://seqbim.cnrs.fr/seqbim-2024/">SeqBIM 2024</a>, Rennes.</span></li>
+        <li><span class="date">Jun 2024</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> defends his <a href="https://dspace.cuni.cz/handle/20.500.11956/192064">bachelor thesis</a>.</span></li>
+        <li><span class="date">May 2024</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> wins 1st place in the Theoretical CS &amp; ML section of <a href="https://svoc2024.prf.upol.cz/">SVOČ 2024</a> (Czech-Slovak contest of best undergraduate theses).</span></li>
+        <li><span class="date">Feb 2024</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> presents at <a href="https://sites.google.com/view/sequences2024/">Sequences 2024</a>, London.</span></li>
+        <li><span class="date">Apr 2023</span> <span><a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> presents <a href="https://doi.org/10.1101/2023.02.01.526717">masked superstrings</a> at <a href="https://recomb-seq.github.io/history/2023/program">RECOMB-Seq 2023</a>, Istanbul.</span></li>
+      </ul>
+    </details>
   </section>
-  <section id="research">
-    <h2>Research</h2>
+  <section id="software">
+    <h2>Software</h2>
+    <div class="tool">
+      <div class="icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M5 33C12 33 12 9 20.5 9S29 27 32 27S35 9 43.5 9S52 33 59 33" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="46" text-anchor="middle" font-size="8.5">ACG<tspan opacity=".5">t</tspan>A<tspan opacity=".5">ca</tspan></text><text x="32" y="56" text-anchor="middle" font-size="8.5" opacity=".6">1110100</text></svg></div>
+      <div>
+        <a class="name" href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a> – computes masked superstrings: represents a <i>k</i>-mer set compactly as a superstring with a mask.
+        <div class="links"><a href="https://github.com/masked-superstrings/kmercamel">GitHub</a><a href="https://anaconda.org/bioconda/kmercamel">Bioconda</a><a href="https://doi.org/10.1101/2023.02.01.526717">Paper</a></div>
+      </div>
+    </div>
+    <div class="tool">
+      <div class="icon"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="26" r="20" fill="none" stroke-width="2.5"/><path d="M40.5 40.5L57 57" stroke-width="4" stroke-linecap="round"/><text x="26" y="25" text-anchor="middle" font-size="7">ACG<tspan opacity=".5">t</tspan>A<tspan opacity=".5">ca</tspan></text><text x="26" y="33" text-anchor="middle" font-size="7" opacity=".6">1110100</text></svg></div>
+      <div>
+        <a class="name" href="https://github.com/masked-superstrings/fmsi">FMSI</a> – a memory-efficient exact <i>k</i>-mer set index based on masked superstrings and the masked Burrows-Wheeler transform; supports membership queries and set operations.
+        <div class="links"><a href="https://github.com/masked-superstrings/fmsi">GitHub</a><a href="https://anaconda.org/bioconda/fmsi">Bioconda</a><a href="https://doi.org/10.1093/bioadv/vbaf290">Paper</a></div>
+      </div>
+    </div>
+    <p><a class="gh-link" href="https://github.com/masked-superstrings"><svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>github.com/masked-superstrings</a></p>
+  </section>
+  <section id="papers">
+    <h2>Papers</h2>
     <article class="project" id="ms">
       <div class="figure" aria-hidden="true"><svg viewBox="0 0 110 80" aria-hidden="true"><text x="10" y="14" font-size="13">ACG</text><text x="18" y="29" font-size="13">CGT</text><text x="26" y="44" font-size="13">GTA</text><path d="M8 50H102" fill="none" opacity=".5"/><text x="10" y="69" font-size="13">ACGT<tspan opacity=".55">a</tspan></text></svg></div>
       <div>
@@ -41,11 +173,12 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 Georgia,'Tim
         <h3><a href="https://doi.org/10.1101/2023.02.01.526717">Masked superstrings as a unified framework for textual <i>k</i>-mer set representations</a></h3>
         <div class="authors">Ondřej Sladký, Pavel Veselý, and Karel Břinda</div>
         <div class="venue"><em>RECOMB-Seq 2023; bioRxiv, 2023</em></div>
+        <div class="doi">DOI: <a href="https://doi.org/10.1101/2023.02.01.526717">10.1101/2023.02.01.526717</a></div>
         <p class="description">The original masked superstring framework, its computational complexity, and greedy construction algorithms implemented in KmerCamel.</p>
         <div class="links">
-          <a href="https://doi.org/10.1101/2023.02.01.526717">[Preprint]</a>
-          <a href="https://github.com/masked-superstrings/kmercamel">[KmerCamel]</a>
-          <a href="https://github.com/masked-superstrings/ms-supplement">[Code &amp; data]</a>
+          <a href="https://doi.org/10.1101/2023.02.01.526717">Preprint</a>
+          <a href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a>
+          <a href="https://github.com/masked-superstrings/ms-supplement">Code &amp; data</a>
         </div>
       </div>
     </article>
@@ -56,10 +189,27 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 Georgia,'Tim
         <h3><a href="https://doi.org/10.1093/bioadv/vbaf290">FroM Superstring to Indexing: a space-efficient index for unconstrained <i>k</i>-mer sets using the Masked Burrows-Wheeler Transform (MBWT)</a></h3>
         <div class="authors">Ondřej Sladký, Pavel Veselý, and Karel Břinda</div>
         <div class="venue"><em>Bioinformatics Advances 6(1), vbaf290, 2026</em></div>
+        <div class="doi">DOI: <a href="https://doi.org/10.1093/bioadv/vbaf290">10.1093/bioadv/vbaf290</a></div>
         <p class="description">The masked Burrows-Wheeler transform and FMSI index enable memory-efficient exact <i>k</i>-mer membership queries.</p>
         <div class="links">
-          <a href="https://doi.org/10.1093/bioadv/vbaf290">[Paper]</a>
-          <a href="https://github.com/masked-superstrings/fmsi">[FMSI]</a>
+          <a href="https://doi.org/10.1093/bioadv/vbaf290">Paper</a>
+          <a href="https://github.com/masked-superstrings/fmsi">FMSI</a>
+        </div>
+      </div>
+    </article>
+    <article class="project" id="pareto">
+      <div class="figure" aria-hidden="true"><svg viewBox="0 0 110 80" aria-hidden="true"><path d="M12 7V65H104" fill="none" opacity=".6"/><path d="M24 15L38 37L62 48L94 55" fill="none" stroke-width="2"/><g fill="currentColor"><circle cx="24" cy="15" r="2.6"/><circle cx="38" cy="37" r="2.6"/><circle cx="62" cy="48" r="2.6"/><circle cx="94" cy="55" r="2.6"/></g><g fill="currentColor" opacity=".25"><circle cx="60" cy="18" r="2.5"/><circle cx="83" cy="30" r="2.5"/></g></svg></div>
+      <div>
+        <div class="tag">Compression</div>
+        <h3><a href="https://doi.org/10.1177/15578666261491601">Pareto optimization of masked superstrings improves compression of pan-genome <i>k</i>-mer sets</a></h3>
+        <div class="authors">Ján Plachý, Ondřej Sladký, Karel Břinda, and Pavel Veselý</div>
+        <div class="venue"><em>Journal of Computational Biology, 2026</em></div>
+        <div class="doi">DOI: <a href="https://doi.org/10.1177/15578666261491601">10.1177/15578666261491601</a></div>
+        <p class="description">Optimizing the trade-off between superstring and mask properties for more compact pan-genomic <i>k</i>-mer set representations.</p>
+        <div class="links">
+          <a href="https://doi.org/10.1177/15578666261491601">Paper</a>
+          <a href="https://doi.org/10.64898/2026.03.18.712440">Preprint</a>
+          <a href="https://github.com/masked-superstrings/pareto-optimization-supplement">Code &amp; data</a>
         </div>
       </div>
     </article>
@@ -70,35 +220,28 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 Georgia,'Tim
         <h3><a href="https://www.stringology.org/event/2025/p04.html">Towards efficient <i>k</i>-mer set operations via function-assigned masked superstrings</a></h3>
         <div class="authors">Ondřej Sladký, Pavel Veselý, and Karel Břinda</div>
         <div class="venue"><em>Prague Stringology Conference (PSC), pp. 26–40, 2025</em></div>
+        <div class="doi">DOI (preprint): <a href="https://doi.org/10.1101/2024.03.06.583483">10.1101/2024.03.06.583483</a></div>
         <p class="description">Function-assigned masked superstrings generalize masking with demasking functions and support set operations through index merging.</p>
         <div class="links">
-          <a href="https://www.stringology.org/event/2025/p04.html">[Paper]</a>
-          <a href="https://doi.org/10.1101/2024.03.06.583483">[Preprint]</a>
-          <a href="https://github.com/masked-superstrings/fmsi">[FMSI]</a>
+          <a href="https://www.stringology.org/event/2025/p04.html">Paper</a>
+          <a href="https://doi.org/10.1101/2024.03.06.583483">Preprint</a>
+          <a href="https://github.com/masked-superstrings/fmsi">FMSI</a>
         </div>
       </div>
     </article>
-    <article class="project" id="pareto">
-      <div class="figure" aria-hidden="true"><svg viewBox="0 0 110 80" aria-hidden="true"><path d="M12 7V65H104" fill="none" opacity=".6"/><path d="M24 15L38 37L62 48L94 55" fill="none" stroke-width="2"/><g fill="currentColor"><circle cx="24" cy="15" r="2.6"/><circle cx="38" cy="37" r="2.6"/><circle cx="62" cy="48" r="2.6"/><circle cx="94" cy="55" r="2.6"/></g><g fill="currentColor" opacity=".25"><circle cx="60" cy="18" r="2.5"/><circle cx="83" cy="30" r="2.5"/></g><text x="57" y="77" text-anchor="middle" font-size="9">Pareto front</text></svg></div>
-      <div>
-        <div class="tag">Compression</div>
-        <h3><a href="https://doi.org/10.1177/15578666261491601">Pareto optimization of masked superstrings improves compression of pan-genome <i>k</i>-mer sets</a></h3>
-        <div class="authors">Ján Plachý, Ondřej Sladký, Karel Břinda, and Pavel Veselý</div>
-        <div class="venue"><em>Journal of Computational Biology, 2026</em></div>
-        <p class="description">Optimizing the trade-off between superstring and mask properties for more compact pan-genomic <i>k</i>-mer set representations.</p>
-        <div class="links">
-          <a href="https://doi.org/10.1177/15578666261491601">[Paper]</a>
-          <a href="https://doi.org/10.1101/2026.03.18.712440">[Preprint]</a>
-          <a href="https://github.com/masked-superstrings/pareto-optimization-supplement">[Code &amp; data]</a>
-        </div>
-      </div>
-    </article>
-    <p><a href="https://github.com/masked-superstrings?tab=repositories">All software repositories ↗</a></p>
+  </section>
+  <section id="people">
+    <h2>People</h2>
+    <ul class="people">
+      <li><a class="name" href="https://brinda.eu">Karel Břinda</a><span class="affiliation">Inria / IRISA, Rennes</span></li>
+      <li><a class="name" href="https://kam.mff.cuni.cz/~janci/">Ján Plachý</a><span class="affiliation">Charles University, Prague</span></li>
+      <li><a class="name" href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej Sladký</a><span class="affiliation">ETH Zurich</span></li>
+      <li><a class="name" href="https://iuuk.mff.cuni.cz/~vesely/">Pavel Veselý</a><span class="affiliation">Charles University, Prague</span></li>
+    </ul>
   </section>
 </main>
 <footer>
-  Masked superstrings · <a href="https://github.com/masked-superstrings">GitHub</a><br>
-  Design inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a>.
+  <div class="inner">© 2026 Masked superstrings · <a href="https://github.com/masked-superstrings">GitHub</a> · Design inspired by <a href="https://github.com/yaoyao-liu/minimal-light">Minimal Light</a></div>
 </footer>
 </body>
 </html>
