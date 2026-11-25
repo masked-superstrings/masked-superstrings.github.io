@@ -403,9 +403,9 @@ h2{margin-top:42px}
           <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.132"><b>1.1×</b></i><i class="cut k-matchtigs"><b>17.3×</b></i><i class="k-bigreedy" style="--v:3.405"><b>3.4×</b></i><i class="best k-pandedup" style="--v:1.062"><b>1.1×</b></i></div>
 <!-- /gen:cost -->
           </div>
-          <figcaption class="caption">Length of <span class="nw"><i>k</i>-mer</span> set representations and time to compute them from the input sequences (<i>k</i>&nbsp;=&nbsp;31), relative to unitigs (purple lines). Unitigs, greedy simplitigs and greedy matchtigs were computed with <a href="https://github.com/algbio/ggcat">GGCAT</a> (8 threads); masked superstrings with BiGreedy from the unitigs, using <a href="https://github.com/OndrejSladky/kmercamel">KmerCamel</a> (1 thread) or <a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a> (8 threads); the better of the two is in bold. Bars beyond 6× are truncated; matchtigs of the human reads did not finish within 24&nbsp;h. Adapted from Fig.&nbsp;2 of the upcoming new version of the <a href="#ms">masked superstrings paper</a>.</figcaption>
+          <figcaption class="caption">Length of <span class="nw"><i>k</i>-mer</span> set representations and time to compute them from the input sequences (<i>k</i>&nbsp;=&nbsp;31), relative to unitigs (purple lines). Unitigs, greedy simplitigs and greedy matchtigs were computed with <a href="https://github.com/algbio/ggcat">GGCAT</a> (8 threads); masked superstrings with BiGreedy from the unitigs, using <a href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a> (1 thread) or <a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a> (8 threads); the better of the two is in bold. Bars beyond 6× are truncated; matchtigs of the human reads did not finish within 24&nbsp;h. Adapted from Fig.&nbsp;2 of the upcoming new version of the <a href="#ms">masked superstrings paper</a>.</figcaption>
         </figure>
-        <p>BiGreedy is implemented in <a href="https://github.com/OndrejSladky/kmercamel">KmerCamel</a> and, in parallel, in <a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a>.</p>
+        <p>BiGreedy is implemented in <a href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a> and, in parallel, in <a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a>.</p>
       </div></details>
       <details class="sec" id="optimality"><summary><span>BiGreedy superstrings are near-optimal</span></summary><div class="body">
         <p>How short can a superstring be? A minimum-weight cycle cover of the <span class="nw"><i>k</i>-mer</span> overlap graph gives a lower bound on the length of any superstring of a <span class="nw"><i>k</i>-mer</span> set. Across <span class="nw"><i>k</i>-mer</span> sizes, pangenome expansion, abundance filtering and subsampling, BiGreedy superstrings exceed this bound by a median of <!-- gen:optimal-median -->0.004%<!-- /gen:optimal-median --> and by less than 0.05% in all tested conditions.</p>
@@ -505,17 +505,17 @@ h2{margin-top:42px}
   <section id="software">
     <h2>Software</h2>
     <div class="tool c-red">
-      <a class="icon" href="https://github.com/OndrejSladky/kmercamel" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M5 33C12 33 12 9 20.5 9S29 27 32 27S35 9 43.5 9S52 33 59 33" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="46" text-anchor="middle" font-size="8.5">ACG<tspan opacity=".5">t</tspan>A<tspan opacity=".5">ca</tspan></text><text x="32" y="56" text-anchor="middle" font-size="8.5" opacity=".6">1110100</text></svg></a>
+      <a class="icon" href="https://github.com/masked-superstrings/kmercamel" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M5 33C12 33 12 9 20.5 9S29 27 32 27S35 9 43.5 9S52 33 59 33" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="46" text-anchor="middle" font-size="8.5">ACG<tspan opacity=".5">t</tspan>A<tspan opacity=".5">ca</tspan></text><text x="32" y="56" text-anchor="middle" font-size="8.5" opacity=".6">1110100</text></svg></a>
       <div>
-        <a class="name" href="https://github.com/OndrejSladky/kmercamel">KmerCamel</a> – computes masked superstrings from original <i>k</i>-mer sets or from unitigs/simplitigs, optimizes their masks for compression or indexing, and computes lower bounds on the superstring length.
-        <div class="links"><a href="https://github.com/OndrejSladky/kmercamel">GitHub</a><a href="https://anaconda.org/bioconda/kmercamel">Bioconda</a><a href="https://doi.org/10.1101/2023.02.01.526717">Paper</a></div>
+        <a class="name" href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a> – computes masked superstrings from original <i>k</i>-mer sets or from unitigs/simplitigs, optimizes their masks for compression or indexing, and computes lower bounds on the superstring length.
+        <div class="links"><a href="https://github.com/masked-superstrings/kmercamel">GitHub</a><a href="https://anaconda.org/bioconda/kmercamel">Bioconda</a><a href="https://doi.org/10.1101/2023.02.01.526717">Paper</a></div>
       </div>
     </div>
     <div class="tool c-blue">
-      <a class="icon" href="https://github.com/OndrejSladky/fmsi" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="26" r="20" fill="none" stroke-width="2.5"/><path d="M40.5 40.5L57 57" stroke-width="4" stroke-linecap="round"/><text x="26" y="25" text-anchor="middle" font-size="7">ACG<tspan opacity=".5">t</tspan>A<tspan opacity=".5">ca</tspan></text><text x="26" y="33" text-anchor="middle" font-size="7" opacity=".6">1110100</text></svg></a>
+      <a class="icon" href="https://github.com/masked-superstrings/fmsi" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="26" r="20" fill="none" stroke-width="2.5"/><path d="M40.5 40.5L57 57" stroke-width="4" stroke-linecap="round"/><text x="26" y="25" text-anchor="middle" font-size="7">ACG<tspan opacity=".5">t</tspan>A<tspan opacity=".5">ca</tspan></text><text x="26" y="33" text-anchor="middle" font-size="7" opacity=".6">1110100</text></svg></a>
       <div>
-        <a class="name" href="https://github.com/OndrejSladky/fmsi">FMSI</a> – a memory-efficient exact <i>k</i>-mer set index based on masked superstrings and the masked Burrows-Wheeler transform; supports membership queries, compressed dictionary queries, and set operations.
-        <div class="links"><a href="https://github.com/OndrejSladky/fmsi">GitHub</a><a href="https://anaconda.org/bioconda/fmsi">Bioconda</a><a href="https://doi.org/10.1093/bioadv/vbaf290">Paper</a></div>
+        <a class="name" href="https://github.com/masked-superstrings/fmsi">FMSI</a> – a memory-efficient exact <i>k</i>-mer set index based on masked superstrings and the masked Burrows-Wheeler transform; supports membership queries, compressed dictionary queries, and set operations.
+        <div class="links"><a href="https://github.com/masked-superstrings/fmsi">GitHub</a><a href="https://anaconda.org/bioconda/fmsi">Bioconda</a><a href="https://doi.org/10.1093/bioadv/vbaf290">Paper</a></div>
       </div>
     </div>
     <div class="tool c-pro">
@@ -542,7 +542,7 @@ h2{margin-top:42px}
         <div class="links">
           <a href="https://brinda.eu/papers/2023-SladkyEtAl-RECOMBSeq.pdf">PDF</a>
           <a href="https://doi.org/10.1101/2023.02.01.526717">Preprint</a>
-          <a href="https://github.com/OndrejSladky/kmercamel">KmerCamel</a>
+          <a href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a>
           <a href="https://github.com/masked-superstrings/ms-supplement">Code &amp; data</a>
           <button type="button" class="bib-btn" aria-expanded="false" aria-controls="bib-ms">BibTeX</button>
         </div>
@@ -567,7 +567,7 @@ h2{margin-top:42px}
         <div class="links">
           <a href="https://brinda.eu/papers/2026-SladkyEtAl-BioinformAdv.pdf">PDF</a>
           <a href="https://doi.org/10.1093/bioadv/vbaf290">Paper</a>
-          <a href="https://github.com/OndrejSladky/fmsi">FMSI</a>
+          <a href="https://github.com/masked-superstrings/fmsi">FMSI</a>
           <button type="button" class="bib-btn" aria-expanded="false" aria-controls="bib-fmsi">BibTeX</button>
         </div>
         <div class="bib" id="bib-fmsi" hidden><button type="button" class="bib-copy">Copy</button><pre>@article{Sladky2026fmsi,
@@ -620,7 +620,7 @@ h2{margin-top:42px}
           <a href="https://brinda.eu/papers/2025-SladkyEtAl-PSC.pdf">PDF</a>
           <a href="https://www.stringology.org/event/2025/p04.html">Paper</a>
           <a href="https://doi.org/10.1101/2024.03.06.583483">Preprint</a>
-          <a href="https://github.com/OndrejSladky/fmsi">FMSI</a>
+          <a href="https://github.com/masked-superstrings/fmsi">FMSI</a>
           <button type="button" class="bib-btn" aria-expanded="false" aria-controls="bib-fms">BibTeX</button>
         </div>
         <div class="bib" id="bib-fms" hidden><button type="button" class="bib-copy">Copy</button><pre>@inproceedings{Sladky2025fms,
