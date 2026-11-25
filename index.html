@@ -10,6 +10,11 @@
   <meta property="og:title" content="Masked superstrings">
   <meta property="og:description" content="Compact data structures for arbitrary k-mer set representation: construction, compression, indexing and set operations.">
   <meta property="og:url" content="https://masked-superstrings.github.io/">
+  <meta property="og:image" content="https://masked-superstrings.github.io/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Masked superstrings: a superstring and a binary mask representing a set of k-mers">
+  <meta name="twitter:card" content="summary_large_image">
   <style>
 :root{color-scheme:light;--bg:#fff;--text:#3a3f46;--heading:#0a3a5c;--link:#0072B5;--link-hover:#004f7d;--muted:#6b7178;--faint:#9aa1a9;--line:#e6e8eb;--soft:#f4f6f8;--tile:#e3eef6;
 /* NEJM palette (ggsci) */
@@ -123,7 +128,7 @@ header p{margin:0 0 18px}
 .cost-grid .ds{font:10.5px/1.35 var(--sans);color:var(--muted)}
 .cost-grid .ds b{display:block;font-size:11.5px;font-weight:600;color:var(--text)}
 .bars{--max:6;position:relative;margin-right:44px;padding:5px 0;background:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px calc(100%/6));box-shadow:1px 0 var(--line)}
-.bars::after{content:"";position:absolute;top:0;bottom:0;left:calc(100%/var(--max));border-left:1px solid var(--nejm-purple)}
+.bars::after{content:"";position:absolute;top:0;bottom:0;left:calc(100%/var(--max));border-left:1px solid var(--ref,var(--nejm-purple))}
 .bars>i{display:block;position:relative;height:6px;margin:0 0 3px;width:calc(var(--v)/var(--max)*100%);background:var(--c)}
 .bars>i:last-child{margin:0}
 .bars>i b{position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:4px;font:400 9.5px/1 var(--sans);color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -137,6 +142,54 @@ header p{margin:0 0 18px}
 .bars.len>i b{left:calc(100%/var(--v))}
 .bars.len>.na b{left:100%}
 .cost .caption{margin-top:10px}
+/* Compression table (adapted from Fig. 4a of the paper); --t is the shade of a cell, 0 to 1 */
+.ctab{border-collapse:collapse;font:11.5px/1.3 var(--sans);color:var(--text);font-variant-numeric:tabular-nums}
+.ctab th{font-weight:400;text-align:left;white-space:nowrap;padding:2px 14px 2px 0}
+.ctab thead th{font-weight:600;color:var(--heading);text-align:center;vertical-align:bottom;padding:1px 4px 3px}
+.ctab thead tr+tr th{font-weight:400;color:var(--muted)}
+.ctab td{text-align:right;padding:2px 8px;min-width:54px;border:1px solid var(--bg)}
+.ctab .sh th{font-weight:600;color:var(--heading);padding-top:9px}
+.ctab .sh span{font-weight:400;color:var(--muted)}
+.ctab .d{display:inline-block;width:11.5em;padding-left:10px}
+.ctab .g{text-align:center;background:rgb(188 60 41/calc(var(--t)*.92))}
+.ctab .g.w{color:#fff}
+/* Scatter plot of near-optimality: dots in a stretched SVG, labels in HTML */
+.sc-t{font:600 12px/1.4 var(--sans);color:var(--heading)}
+.sc-t span,.sc-x span{font-weight:400;color:var(--muted)}
+.sc{position:relative;height:250px;margin:8px 52px 20px 58px}
+.sc svg{display:block;width:100%;height:100%;overflow:visible}
+.sc svg path{fill:none;stroke:var(--c);stroke-width:5px;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.4}
+.sc svg .gr{stroke:var(--line);stroke-width:1px;stroke-linecap:butt;opacity:1}
+.sc span{position:absolute;font:9.5px/1 var(--sans);color:var(--faint);white-space:nowrap}
+.sc .yt{right:100%;margin-right:6px;top:calc(var(--p)*1%);transform:translateY(-50%)}
+.sc .xt{top:100%;margin-top:5px;left:calc(var(--p)*1%);transform:translateX(-50%)}
+.sc .md{left:100%;margin-left:6px;top:calc(var(--p)*1%);transform:translateY(-50%);color:var(--c,var(--faint));font-weight:700}
+.sc-x{font:10.5px/1.4 var(--sans);color:var(--text);text-align:center;margin:0 52px 0 58px}
+/* Index benchmark: small multiples of memory vs query time */
+.k-fmsi,.k-fmsi2{--c:var(--nejm-red)}
+.k-sbwt,.k-sbwtsq{--c:var(--nejm-blue)}
+.k-sshash{--c:var(--nejm-green)}
+.mk{width:11px;height:11px;vertical-align:-1.5px;margin-right:4px;overflow:visible}
+.cost-key .mk+.mk{margin-left:-2px}
+.cost-key.mkd span::before{content:none}
+.mk use,.ix svg use{fill:var(--c,var(--muted));stroke:var(--c,var(--muted));stroke-width:.9;stroke-linejoin:round}
+.mk .sm,.ix svg .sm{fill:var(--bg)}
+.mk .xs,.ix svg .xs{fill:color-mix(in srgb,var(--c,var(--muted)) 35%,var(--bg))}
+.ix svg .dom{opacity:.35}
+.ix{display:grid;grid-template-columns:auto repeat(3,1fr);gap:4px 10px;margin-top:6px}
+.ix .ch{font:600 11.5px/1.4 var(--sans);color:var(--text);text-align:center}
+.ix .rt{grid-column:1/-1;font:600 11.5px/1.4 var(--sans);color:var(--heading);margin-top:4px}
+.ix .rt .u{font-weight:400;color:var(--muted)}
+.ix .ya,.ix .xa{position:relative;font:9.5px/1 var(--sans);color:var(--faint)}
+.ix .ya{min-width:34px}
+.ix .xa{height:12px}
+.ix .ya span{position:absolute;right:0;top:calc(var(--p)*1%);transform:translateY(-50%);white-space:nowrap}
+.ix .xa span{position:absolute;left:calc(var(--p)*1%);transform:translateX(-50%)}
+.ix .pl{aspect-ratio:4/3;border:1px solid var(--line);border-radius:3px}
+.ix .pl svg{display:block;width:100%;height:100%}
+.ix svg .gr{stroke:var(--line);stroke-width:.5}
+.ix svg .fr{fill:none;stroke:var(--muted);stroke-width:.8;stroke-dasharray:.2 1.8;stroke-linecap:round}
+.ix .xl{grid-column:2/-1;font:10.5px/1.4 var(--sans);color:var(--text);text-align:center}
 
 /* News */
 #news h2{margin:36px 0 12px}
@@ -221,11 +274,20 @@ h2{margin-top:42px}
 .sec .body{padding:0 12px 12px 14px}
 .msg .legend{max-width:none}
 .cost-grid{grid-template-columns:.7fr 1fr 1fr;column-gap:8px}
-.cost-grid .sp,.cost-grid .hd .m{display:none}
+.cost-grid .sp,.cost-grid .hd .m,.sc .m{display:none}
 .cost-grid .ds{grid-column:1/-1;padding-top:8px}
 .cost-grid .ds b{display:inline}
 .cost-grid .hd,.bars{margin-right:40px}
 .cost-grid .len{margin-right:28px}
+.ctab{font-size:10.5px}
+.ctab td{min-width:0;padding:2px 5px}
+.ctab th{padding-right:6px}
+.ctab .d{display:block;width:auto;padding-left:0}
+.ctab .d:empty{display:none}
+.sc{height:220px;margin:8px 44px 20px 50px}
+.sc-x{margin:0 44px 0 50px}
+.ix{gap:4px 6px}
+.ix .ya{min-width:30px}
 .news li{grid-template-columns:64px 1fr;gap:10px}
 .older summary{margin-left:74px}
 .tool{grid-template-columns:72px 1fr;gap:16px}
@@ -253,9 +315,9 @@ h2{margin-top:42px}
   <section id="news">
     <h2>News</h2>
     <ul class="news">
-      <li><span class="date">Nov 2026</span> <span><a href="https://github.com/masked-superstrings/fmsi2">FMSI2</a>, a more efficient and optimized version of FMSI with support for parallelization, is now available.</span></li>
+      <li><span class="date">Nov 2026</span> <span><a href="https://github.com/masked-superstrings/fmsi2">FMSI2</a>, a parallelized successor of FMSI, one to two orders of magnitude faster.</span></li>
       <li><span class="date">Oct 2026</span> <span><a href="https://doi.org/10.1177/15578666261491601">Pareto optimization of masked superstrings</a> published in <i>J. Comput. Biol.</i> (<a href="https://brinda.eu/papers/2026-PlachyEtAl-JCB.pdf">PDF</a>).</span></li>
-      <li><span class="date">Oct 2026</span> <span><a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a> by Ragnar Groot Koerkamp supports parallel masked superstring construction (<a href="https://curiouscoding.nl/posts/pandedup-log/">blog post</a>).</span></li>
+      <li><span class="date">Oct 2026</span> <span><a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a> by Ragnar Groot Koerkamp computes masked superstrings with parallel BiGreedy (<a href="https://curiouscoding.nl/posts/pandedup-log/">blog post</a>).</span></li>
       <li><span class="date">May 2026</span> <span><a href="https://kam.mff.cuni.cz/~janci/">Ján</a> presents <a href="https://doi.org/10.1177/15578666261491601">Pareto optimization</a> at <a href="https://recomb-seq.github.io/seq2026/program">RECOMB-Seq 2026</a>, Thessaloniki (<a href="https://brinda.eu/papers/2026-PlachyEtAl-JCB.pdf">PDF</a>).</span></li>
       <li><span class="date">Apr 2026</span> <span><a href="https://www.matfyz.cz/clanky/maskovane-nadretezce-oteviraji-novou-kapitolu-bioinformatiky">Interview</a> with <a href="https://www.linkedin.com/in/ond%C5%99ej-sladk%C3%BD-502b14221/">Ondřej</a> on Matfyz.cz (in Czech).</span></li>
     </ul>
@@ -292,7 +354,7 @@ h2{margin-top:42px}
           </div>
         </div>
       </div>
-      <details class="sec"><summary><span>Masked superstrings generalize SPSS</span></summary><div class="body">
+      <details class="sec" id="spss"><summary><span>Masked superstrings generalize SPSS</span></summary><div class="body">
         <p>Superstrings correspond to paths in the <span class="nw"><i>k</i>-mer</span> overlap graph, of which the de Bruijn graph is the subgraph of (<i>k</i>&nbsp;–&nbsp;1)-overlaps. Concatenating the strings of any SPSS therefore gives a valid masked superstring, and every SPSS construction is a constrained superstring heuristic. Overlaps shorter than <i>k</i>&nbsp;–&nbsp;1 allow even shorter superstrings:</p>
         <div class="covers">
           <div class="name k-kmers"><i>k</i>-mers</div><div class="k-kmers"><div class="seq"><i>GGA</i><i>ACC</i><i>CGA</i><i>GAC</i><i>ACT</i><i>CTT</i></div><div class="mask"><i><b>1</b>00</i><i><b>1</b>00</i><i><b>1</b>00</i><i><b>1</b>00</i><i><b>1</b>00</i><i><b>1</b><span class="tail">0</span><span class="tail">0</span></i></div></div><div class="len">18</div>
@@ -303,13 +365,14 @@ h2{margin-top:42px}
         </div>
         <p>Masks are not unique: they can be chosen to avoid duplicate <span class="nw"><i>k</i>-mers</span> or to make the mask more compressible.</p>
       </div></details>
-      <details class="sec"><summary><span>Masked superstrings can be computed efficiently</span></summary><div class="body">
+      <details class="sec" id="construction"><summary><span>Masked superstrings can be computed efficiently</span></summary><div class="body">
         <p>BiGreedy adapts the classical greedy superstring algorithm to genomic <span class="nw"><i>k</i>-mer</span> sets: it repeatedly merges the two sequences with the longest suffix–prefix overlap, accounting for reverse complements. Because any duplicate-free SPSS is a valid intermediate state, BiGreedy can start from unitigs or simplitigs computed by parallel tools such as <a href="https://github.com/algbio/ggcat">GGCAT</a>, and the resulting superstrings keep them as retrievable substrings.</p>
         <p>As a result, computing masked superstrings is similar to computing unitigs: most of the time goes to unitig construction, and the additional BiGreedy step is cheap. With the parallel implementation, the whole computation takes 1.0–1.3× the time of unitig construction alone.</p>
         <figure class="cost">
           <div class="cost-key"><span class="k-unitigs">Unitigs</span><span class="k-simplitigs">Greedy simplitigs</span><span class="k-matchtigs">Greedy matchtigs</span><span class="k-bigreedy">Masked superstrings (KmerCamel)</span><span class="k-pandedup">Masked superstrings (Pandedup)</span></div>
           <div class="cost-grid" role="img" aria-label="Bar chart of the length of k-mer set representations and of the time to compute them on seven datasets, relative to unitigs. Masked superstrings have 35 to 70% of the length of unitigs, greedy simplitigs 50 to 76%, greedy matchtigs 40 to 72%. Masked superstrings computed with Pandedup take 1.0 to 1.1 times the CPU time and 1.0 to 1.3 times the real time of unitigs; with single-threaded KmerCamel 1.0 to 1.4 times the CPU time and 1.0 to 5.1 times the real time. Greedy simplitigs take up to 1.9 and 2.2 times, greedy matchtigs up to 40.9 and 50.5 times.">
           <div class="sp"></div><div class="hd len">Length<span style="--v:0">0</span><span class="m" style="--v:.5">50%</span><span class="one" style="--v:1">100%</span></div><div class="hd">CPU time<span class="m" style="--v:0">0</span><span class="one" style="--v:1">1×</span><span class="m" style="--v:2">2×</span><span style="--v:3">3×</span><span class="m" style="--v:4">4×</span><span class="m" style="--v:5">5×</span><span style="--v:6">6×</span></div><div class="hd">Real time<span class="m" style="--v:0">0</span><span class="one" style="--v:1">1×</span><span class="m" style="--v:2">2×</span><span style="--v:3">3×</span><span class="m" style="--v:4">4×</span><span class="m" style="--v:5">5×</span><span style="--v:6">6×</span></div>
+<!-- gen:cost -->
           <div class="ds"><b>Human genome</b> <span>T2T-CHM13 assembly</span></div>
           <div class="bars len"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:0.760"><b>76%</b></i><i class="k-matchtigs" style="--v:0.711"><b>71%</b></i><i class="best k-bigreedy" style="--v:0.699"><b>70%</b></i><i class="best k-pandedup" style="--v:0.700"><b>70%</b></i></div>
           <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.871"><b>1.9×</b></i><i class="cut k-matchtigs"><b>40.9×</b></i><i class="k-bigreedy" style="--v:1.430"><b>1.4×</b></i><i class="best k-pandedup" style="--v:1.064"><b>1.1×</b></i></div>
@@ -338,34 +401,121 @@ h2{margin-top:42px}
           <div class="bars len"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:0.589"><b>59%</b></i><i class="k-matchtigs" style="--v:0.537"><b>54%</b></i><i class="best k-bigreedy" style="--v:0.365"><b>36%</b></i><i class="best k-pandedup" style="--v:0.365"><b>36%</b></i></div>
           <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.047"><b>1.0×</b></i><i class="cut k-matchtigs"><b>13.0×</b></i><i class="k-bigreedy" style="--v:1.225"><b>1.2×</b></i><i class="best k-pandedup" style="--v:1.016"><b>1.0×</b></i></div>
           <div class="bars"><i class="k-unitigs" style="--v:1"></i><i class="k-simplitigs" style="--v:1.132"><b>1.1×</b></i><i class="cut k-matchtigs"><b>17.3×</b></i><i class="k-bigreedy" style="--v:3.405"><b>3.4×</b></i><i class="best k-pandedup" style="--v:1.062"><b>1.1×</b></i></div>
+<!-- /gen:cost -->
           </div>
-          <figcaption class="caption">Length of <span class="nw"><i>k</i>-mer</span> set representations and time to compute them from the input sequences (<i>k</i>&nbsp;=&nbsp;31), relative to unitigs (purple lines). Unitigs, greedy simplitigs and greedy matchtigs were computed with <a href="https://github.com/algbio/ggcat">GGCAT</a> (8 threads); masked superstrings with BiGreedy from the unitigs, using <a href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a> (1 thread) or <a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a> (8 threads); the better of the two is in bold. Bars beyond 6× are truncated; matchtigs of the human reads did not finish within 24&nbsp;h. Adapted from Fig.&nbsp;2 of the upcoming new version of the masked superstrings paper.</figcaption>
+          <figcaption class="caption">Length of <span class="nw"><i>k</i>-mer</span> set representations and time to compute them from the input sequences (<i>k</i>&nbsp;=&nbsp;31), relative to unitigs (purple lines). Unitigs, greedy simplitigs and greedy matchtigs were computed with <a href="https://github.com/algbio/ggcat">GGCAT</a> (8 threads); masked superstrings with BiGreedy from the unitigs, using <a href="https://github.com/OndrejSladky/kmercamel">KmerCamel</a> (1 thread) or <a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a> (8 threads); the better of the two is in bold. Bars beyond 6× are truncated; matchtigs of the human reads did not finish within 24&nbsp;h. Adapted from Fig.&nbsp;2 of the upcoming new version of the <a href="#ms">masked superstrings paper</a>.</figcaption>
         </figure>
-        <p>Across <span class="nw"><i>k</i>-mer</span> sizes, pangenome expansion, abundance filtering and subsampling, BiGreedy superstrings stay very close to a lower bound on superstring length, and are substantially shorter than simplitigs and matchtigs where the de Bruijn graph branches or fragments. BiGreedy is implemented in <a href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a> and, in parallel, in <a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a>.</p>
+        <p>BiGreedy is implemented in <a href="https://github.com/OndrejSladky/kmercamel">KmerCamel</a> and, in parallel, in <a href="https://github.com/RagnarGrootKoerkamp/pandedup">Pandedup</a>.</p>
       </div></details>
-      <details class="sec"><summary><span>Masked superstrings improve compression</span></summary><div class="body">
-        <p>Compressed masked superstrings (superstring plus mask) are smaller than compressed SPSS and ESS-Compress across genomes, pangenomes and raw-read <span class="nw"><i>k</i>-mer</span> sets, with the largest gains for subsampled sets. Jointly optimizing superstring length and mask further improves the compression of pangenome <span class="nw"><i>k</i>-mer</span> sets (<a href="#pareto">Pareto optimization</a>).</p>
+      <details class="sec" id="optimality"><summary><span>BiGreedy superstrings are near-optimal</span></summary><div class="body">
+        <p>How short can a superstring be? A minimum-weight cycle cover of the <span class="nw"><i>k</i>-mer</span> overlap graph gives a lower bound on the length of any superstring of a <span class="nw"><i>k</i>-mer</span> set. Across <span class="nw"><i>k</i>-mer</span> sizes, pangenome expansion, abundance filtering and subsampling, BiGreedy superstrings exceed this bound by a median of <!-- gen:optimal-median -->0.004%<!-- /gen:optimal-median --> and by less than 0.05% in all tested conditions.</p>
+        <p>Unitigs, simplitigs and matchtigs get close to the bound only where the de Bruijn graph is contiguous. Where it branches or fragments, they approach the trivial representation with one string per <span class="nw"><i>k</i>-mer</span>, whereas BiGreedy superstrings remain near-optimal.</p>
+        <figure class="cost">
+          <div class="cost-key"><span class="k-unitigs">Unitigs</span><span class="k-simplitigs">Simplitigs</span><span class="k-matchtigs">Matchtigs</span><span class="k-bigreedy">BiGreedy masked superstrings</span></div>
+          <div class="sc-t">Excess length over the lower bound <span>(% of the lower bound)</span></div>
+<!-- gen:optimal -->
+          <div class="sc" role="img" aria-label="Scatter plot of the excess length of k-mer set representations over the superstring lower bound against de Bruijn graph contiguity. BiGreedy masked superstrings stay below 0.05% everywhere; unitigs, simplitigs and matchtigs are orders of magnitude above, especially at low contiguity.">
+          <svg viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><path class="gr" d="M30 0V1000M125 0V1000M324 0V1000M523 0V1000M722 0V1000M921 0V1000M0 975H1000M0 915H1000M0 789H1000M0 663H1000M0 536H1000M0 410H1000M0 284H1000M0 158H1000M0 32H1000M0 0H1000V1000H0z"/>
+          <path class="k-unitigs" d="M30 32h0M30 23h0M175 34h0M398 83h0M503 132h0M533 145h0M542 146h0M549 147h0M555 147h0M559 146h0M564 146h0M569 146h0M572 144h0M576 144h0M580 144h0M582 143h0M585 142h0M589 142h0M591 141h0M594 141h0M597 141h0M599 140h0M601 140h0M604 140h0M606 139h0M608 139h0M611 139h0M30 32h0M30 23h0M30 23h0M222 32h0M403 77h0M513 129h0M551 148h0M563 152h0M569 153h0M574 152h0M578 152h0M581 152h0M585 151h0M588 151h0M591 150h0M594 150h0M596 150h0M599 149h0M602 149h0M604 149h0M607 148h0M609 148h0M611 148h0M613 147h0M615 147h0M617 147h0M619 147h0M30 32h0M30 24h0M30 25h0M236 33h0M424 84h0M557 150h0M619 183h0M643 194h0M657 198h0M669 202h0M680 204h0M689 207h0M698 209h0M707 211h0M715 214h0M724 216h0M732 218h0M740 221h0M748 223h0M756 226h0M764 229h0M772 232h0M780 235h0M788 238h0M797 241h0M805 244h0M813 248h0M30 43h0M298 68h0M417 106h0M456 120h0M472 123h0M482 124h0M491 124h0M499 124h0M506 124h0M512 124h0M517 124h0M523 124h0M527 124h0M532 123h0M536 123h0M540 123h0M544 123h0M547 122h0M550 122h0M553 122h0M557 122h0M559 121h0M562 121h0M565 121h0M567 120h0M569 120h0M572 120h0M957 386h0M689 221h0M663 206h0M643 194h0M636 190h0M633 188h0M633 188h0M631 187h0M628 185h0M627 185h0M616 179h0M603 171h0M594 166h0M583 159h0M579 157h0M576 154h0M573 152h0M568 150h0M564 147h0M561 145h0M558 144h0M556 142h0M557 143h0M681 205h0M667 198h0M661 195h0M656 192h0M652 191h0M650 189h0M648 188h0M646 187h0M645 187h0M644 186h0M637 183h0M625 176h0M613 170h0M601 164h0M588 158h0M578 152h0M183 87h0M146 98h0M136 109h0M134 115h0M134 119h0M134 120h0M134 120h0M133 119h0M30 218h0M30 202h0M30 178h0M30 143h0M133 118h0M203 89h0M249 74h0M287 66h0M321 63h0M354 64h0M390 71h0M432 83h0M491 109h0M617 188h0M131 117h0M131 117h0M131 116h0M131 115h0M131 114h0M132 113h0M132 112h0M132 110h0M132 109h0M132 108h0M132 106h0M132 105h0M132 103h0M132 101h0M132 99h0M132 97h0M543 144h0M594 163h0M617 173h0M628 179h0M642 187h0M638 187h0M623 182h0M591 169h0M552 155h0M515 143h0M483 132h0M463 121h0M564 158h0M604 183h0M637 198h0M645 203h0M649 204h0M650 205h0M650 205h0M649 204h0M647 204h0M645 203h0M636 200h0M634 200h0M637 203h0M642 207h0M646 210h0M647 211h0M647 211h0M565 161h0M469 128h0M483 132h0M492 136h0M499 138h0M504 140h0M507 141h0M511 143h0M513 144h0M516 145h0M526 150h0M534 154h0M541 157h0M547 159h0M552 162h0M556 164h0M560 165h0"/>
+          <path class="k-simplitigs" d="M30 723h0M30 271h0M175 160h0M398 189h0M503 220h0M533 232h0M542 229h0M549 231h0M555 235h0M559 230h0M564 231h0M569 234h0M572 230h0M576 230h0M580 233h0M582 229h0M585 228h0M589 231h0M591 227h0M594 227h0M597 229h0M599 226h0M601 225h0M604 227h0M606 224h0M608 224h0M611 226h0M30 692h0M30 295h0M30 191h0M222 155h0M403 187h0M513 224h0M551 236h0M563 239h0M569 240h0M574 241h0M578 241h0M581 241h0M585 241h0M588 241h0M591 241h0M594 241h0M596 241h0M599 241h0M602 241h0M604 241h0M607 241h0M609 240h0M611 241h0M613 240h0M615 240h0M617 240h0M619 240h0M30 615h0M30 277h0M30 191h0M236 157h0M424 199h0M557 253h0M619 277h0M643 285h0M657 288h0M669 290h0M680 292h0M689 294h0M698 295h0M707 297h0M715 299h0M724 300h0M732 302h0M740 304h0M748 306h0M756 308h0M764 310h0M772 313h0M780 316h0M788 319h0M797 322h0M805 325h0M813 328h0M30 190h0M298 176h0M417 194h0M456 201h0M472 203h0M482 205h0M491 205h0M499 205h0M506 206h0M512 206h0M517 206h0M523 206h0M527 206h0M532 206h0M536 206h0M540 205h0M544 205h0M547 206h0M550 205h0M553 205h0M557 205h0M559 204h0M562 204h0M565 204h0M567 203h0M569 203h0M572 203h0M957 481h0M689 318h0M663 302h0M643 288h0M636 283h0M633 282h0M633 281h0M631 280h0M628 277h0M627 277h0M616 270h0M603 261h0M594 254h0M583 245h0M579 242h0M576 239h0M573 237h0M568 233h0M564 231h0M561 229h0M558 228h0M556 227h0M557 228h0M681 293h0M667 287h0M661 284h0M656 282h0M652 280h0M650 279h0M648 278h0M646 277h0M645 276h0M644 276h0M637 273h0M625 266h0M613 260h0M601 254h0M588 247h0M578 241h0M183 90h0M146 98h0M136 109h0M134 115h0M134 119h0M134 120h0M134 120h0M133 119h0M30 218h0M30 202h0M30 178h0M30 143h0M133 118h0M203 89h0M249 74h0M287 66h0M321 63h0M354 65h0M390 72h0M432 86h0M491 115h0M617 243h0M131 117h0M131 117h0M131 116h0M131 115h0M131 114h0M132 113h0M132 112h0M132 110h0M132 109h0M132 108h0M132 106h0M132 105h0M132 103h0M132 101h0M132 99h0M132 97h0M543 203h0M594 228h0M617 242h0M628 248h0M642 248h0M638 233h0M623 214h0M591 190h0M552 171h0M515 160h0M483 156h0M463 158h0M564 219h0M604 236h0M637 247h0M645 247h0M649 245h0M650 243h0M650 240h0M649 237h0M647 234h0M645 231h0M636 220h0M634 216h0M637 217h0M642 219h0M646 221h0M647 221h0M647 220h0M565 224h0M469 185h0M483 191h0M492 194h0M499 197h0M504 199h0M507 201h0M511 202h0M513 204h0M516 205h0M526 210h0M534 214h0M541 216h0M547 219h0M552 221h0M556 223h0M560 224h0"/>
+          <path class="k-matchtigs" d="M398 257h0M503 267h0M533 275h0M542 279h0M549 282h0M555 286h0M559 287h0M564 289h0M569 292h0M572 292h0M576 293h0M580 296h0M582 295h0M585 296h0M589 298h0M591 297h0M594 298h0M597 299h0M599 299h0M601 299h0M604 300h0M606 300h0M608 300h0M611 301h0M551 275h0M563 278h0M569 280h0M574 281h0M578 283h0M581 284h0M585 285h0M588 287h0M591 288h0M594 289h0M596 290h0M599 292h0M602 292h0M604 294h0M607 294h0M609 296h0M611 296h0M613 298h0M615 298h0M617 299h0M619 300h0M557 351h0M619 366h0M643 372h0M657 378h0M669 379h0M680 385h0M689 388h0M698 392h0M707 395h0M715 399h0M724 402h0M732 404h0M740 409h0M748 416h0M756 418h0M764 422h0M772 425h0M780 431h0M788 432h0M797 439h0M805 441h0M813 446h0M298 246h0M417 243h0M456 248h0M472 253h0M482 256h0M491 259h0M499 261h0M506 263h0M512 263h0M517 265h0M523 266h0M527 268h0M532 269h0M536 271h0M540 271h0M544 272h0M547 273h0M550 274h0M553 276h0M557 276h0M559 276h0M562 276h0M565 275h0M567 276h0M569 276h0M572 277h0M957 577h0M689 376h0M663 355h0M643 341h0M636 336h0M633 334h0M633 334h0M631 332h0M628 330h0M627 330h0M616 322h0M603 313h0M594 307h0M583 300h0M579 297h0M576 297h0M573 294h0M568 292h0M564 290h0M561 289h0M558 287h0M556 286h0M557 286h0M681 385h0M667 362h0M661 353h0M656 346h0M652 342h0M650 338h0M648 337h0M646 336h0M645 335h0M644 333h0M637 326h0M625 314h0M613 305h0M601 297h0M588 288h0M578 283h0M183 90h0M146 98h0M136 109h0M134 115h0M134 119h0M134 120h0M134 120h0M133 119h0M30 218h0M30 202h0M30 178h0M30 143h0M133 118h0M203 89h0M249 74h0M287 66h0M321 63h0M354 65h0M390 72h0M432 86h0M491 116h0M617 260h0M131 117h0M131 117h0M131 116h0M131 115h0M131 114h0M132 113h0M132 112h0M132 110h0M132 109h0M132 108h0M132 106h0M132 105h0M132 103h0M132 101h0M132 99h0M132 97h0M594 252h0M617 270h0M628 280h0M642 273h0M638 249h0M623 224h0M591 196h0M552 175h0M515 164h0M483 162h0M463 167h0M604 252h0M637 261h0M645 260h0M649 257h0M650 253h0M650 249h0M649 245h0M647 241h0M645 237h0M636 224h0M634 219h0M637 219h0M642 221h0M646 223h0M647 222h0M647 221h0M469 199h0M483 205h0M492 209h0M499 212h0M504 214h0M507 216h0M511 218h0M513 219h0M516 220h0M526 225h0M534 228h0M541 230h0M547 232h0M552 234h0M556 236h0M560 237h0"/>
+          <path class="k-bigreedy" d="M30 729h0M30 766h0M175 755h0M398 769h0M503 757h0M533 745h0M542 737h0M549 733h0M555 728h0M559 725h0M564 722h0M569 718h0M572 718h0M576 715h0M580 713h0M582 713h0M585 711h0M589 710h0M591 710h0M594 708h0M597 708h0M599 707h0M601 707h0M604 705h0M606 705h0M608 705h0M611 705h0M30 727h0M30 798h0M30 753h0M222 810h0M403 799h0M513 751h0M551 745h0M563 735h0M569 728h0M574 724h0M578 720h0M581 717h0M585 714h0M588 711h0M591 710h0M594 708h0M596 706h0M599 705h0M602 703h0M604 703h0M607 702h0M609 701h0M611 701h0M613 700h0M615 701h0M617 701h0M619 701h0M30 718h0M30 779h0M30 761h0M236 809h0M424 784h0M557 734h0M619 703h0M643 689h0M657 681h0M669 675h0M680 671h0M689 666h0M698 662h0M707 658h0M715 655h0M724 652h0M732 650h0M740 648h0M748 645h0M756 644h0M764 642h0M772 641h0M780 640h0M788 639h0M797 638h0M805 637h0M813 637h0M30 628h0M298 638h0M417 662h0M456 668h0M472 679h0M482 680h0M491 688h0M499 691h0M506 700h0M512 713h0M517 718h0M523 710h0M527 713h0M532 729h0M536 722h0M540 719h0M544 733h0M547 727h0M550 728h0M553 733h0M557 735h0M559 741h0M562 737h0M565 740h0M567 750h0M569 747h0M572 745h0M957 678h0M689 701h0M663 707h0M643 701h0M636 711h0M633 704h0M633 699h0M631 702h0M628 705h0M627 703h0M616 706h0M603 708h0M594 709h0M583 710h0M579 712h0M576 711h0M573 708h0M568 713h0M564 714h0M561 714h0M558 714h0M556 714h0M557 714h0M681 670h0M667 679h0M661 683h0M656 685h0M652 686h0M650 688h0M648 688h0M646 689h0M645 689h0M644 690h0M637 693h0M625 699h0M613 704h0M601 709h0M588 715h0M578 720h0M183 975h0M146 975h0M136 975h0M134 907h0M134 857h0M134 829h0M134 816h0M133 806h0M30 737h0M30 737h0M30 786h0M30 796h0M133 790h0M203 760h0M249 742h0M287 732h0M321 727h0M354 723h0M390 720h0M432 719h0M491 696h0M617 697h0M131 780h0M131 781h0M131 780h0M131 778h0M131 785h0M132 784h0M132 789h0M132 792h0M132 793h0M132 793h0M132 791h0M132 800h0M132 791h0M132 790h0M132 791h0M132 795h0M543 748h0M594 714h0M617 703h0M628 701h0M642 699h0M638 700h0M623 701h0M591 698h0M552 683h0M515 655h0M483 618h0M463 581h0M564 796h0M604 705h0M637 698h0M645 693h0M649 688h0M650 687h0M650 685h0M649 681h0M647 682h0M645 677h0M636 670h0M634 655h0M637 644h0M642 636h0M646 631h0M647 626h0M647 619h0M565 774h0M469 658h0M483 641h0M492 626h0M499 623h0M504 616h0M507 615h0M511 611h0M513 611h0M516 608h0M526 607h0M534 605h0M541 607h0M547 606h0M552 608h0M556 608h0M560 610h0"/>
+          </svg>
+          <span class="yt" style="--p:97.5">&lt; 0.0001%</span><span class="yt" style="--p:91.5">0.0001%</span><span class="yt" style="--p:78.9">0.001%</span><span class="yt" style="--p:66.3">0.01%</span><span class="yt" style="--p:53.6">0.1%</span><span class="yt" style="--p:41">1%</span><span class="yt" style="--p:28.4">10%</span><span class="yt" style="--p:15.8">100%</span><span class="yt" style="--p:3.2">1000%</span>
+          <span class="xt" style="--p:3">&lt; 0.1</span><span class="xt m" style="--p:12.5">0.1</span><span class="xt" style="--p:32.4">1</span><span class="xt" style="--p:52.3">10</span><span class="xt" style="--p:72.2">100</span><span class="xt" style="--p:92.1">1000</span>
+          <span class="md" style="--p:-4">median</span><span class="md k-unitigs" style="--p:14.7">123%</span><span class="md k-simplitigs" style="--p:22.8">28%</span><span class="md k-matchtigs" style="--p:27.6">12%</span><span class="md k-bigreedy" style="--p:70.8">0.004%</span>
+          </div>
+<!-- /gen:optimal -->
+          <div class="sc-x">de Bruijn graph contiguity <span>(mean unitig length minus <i>k</i>)</span></div>
+          <figcaption class="caption">Length of <span class="nw"><i>k</i>-mer</span> set representations above the cycle-cover lower bound. Each point is one tested condition (dataset, <i>k</i>, pangenome size, subsampling rate or abundance threshold); the numbers on the right are medians. Adapted from a supplementary figure of the upcoming new version of the <a href="#ms">masked superstrings paper</a>.</figcaption>
+        </figure>
+      </div></details>
+      <details class="sec" id="compression"><summary><span>Masked superstrings improve compression</span></summary><div class="body">
+        <p>Compressed masked superstrings (superstring plus mask) are typically smaller than compressed SPSS and ESS-Compress across genomes, pangenomes and raw-read <span class="nw"><i>k</i>-mer</span> sets, with the largest gains for subsampled sets. Jointly optimizing superstring length and mask further improves the compression of pangenome <span class="nw"><i>k</i>-mer</span> sets (<a href="#pareto">Pareto optimization</a>).</p>
+        <figure class="cost">
+          <table class="ctab">
+          <thead>
+          <tr><th></th><th colspan="2">Masked superstring,<br>bits per <span class="nw"><i>k</i>-mer</span></th><th colspan="2">Reduction over<br>the best SPSS</th></tr>
+          <tr><th></th><th>xz</th><th>GeCo3</th><th>xz</th><th>GeCo3</th></tr>
+          </thead>
+          <tbody>
+<!-- gen:compression -->
+          <tr class="sh"><th colspan="5">Single assembly</th></tr>
+          <tr><th><span class="d">Human genome</span><i>k</i>&nbsp;=&nbsp;15</th><td>2.64</td><td>2.00</td><td class="g" style="--t:0.21">1.43×</td><td class="g" style="--t:0.22">1.45×</td></tr>
+          <tr><th><span class="d"></span><i>k</i>&nbsp;=&nbsp;31</th><td>1.98</td><td>1.77</td><td class="g" style="--t:0.00">0.99×</td><td class="g" style="--t:0.00">0.99×</td></tr>
+          <tr><th><span class="d"></span><i>k</i>&nbsp;=&nbsp;63</th><td>1.80</td><td>1.59</td><td class="g" style="--t:0.00">1.00×</td><td class="g" style="--t:0.00">1.00×</td></tr>
+          <tr class="sh"><th colspan="5">Pangenomes</th></tr>
+          <tr><th><span class="d">Human pangenome</span><i>k</i>&nbsp;=&nbsp;15</th><td>2.58</td><td>1.93</td><td class="g" style="--t:0.21">1.42×</td><td class="g" style="--t:0.22">1.44×</td></tr>
+          <tr><th><span class="d"></span><i>k</i>&nbsp;=&nbsp;31</th><td>2.18</td><td>1.79</td><td class="g" style="--t:0.04">1.07×</td><td class="g" style="--t:0.03">1.05×</td></tr>
+          <tr><th><span class="d"></span><i>k</i>&nbsp;=&nbsp;63</th><td>2.01</td><td>1.30</td><td class="g" style="--t:0.03">1.06×</td><td class="g" style="--t:0.04">1.07×</td></tr>
+          <tr><th><span class="d"><i>E. coli</i> pangenome</span><i>k</i>&nbsp;=&nbsp;15</th><td>3.08</td><td>2.62</td><td class="g" style="--t:0.26">1.55×</td><td class="g" style="--t:0.38">1.90×</td></tr>
+          <tr><th><span class="d"></span><i>k</i>&nbsp;=&nbsp;31</th><td>1.72</td><td>1.36</td><td class="g" style="--t:0.00">0.98×</td><td class="g" style="--t:0.00">0.99×</td></tr>
+          <tr><th><span class="d"></span><i>k</i>&nbsp;=&nbsp;63</th><td>1.13</td><td>0.79</td><td class="g" style="--t:0.00">0.98×</td><td class="g" style="--t:0.02">1.04×</td></tr>
+          <tr class="sh"><th colspan="5">Subsampled <i>k</i>-mer sets <span>(<i>k</i>&nbsp;=&nbsp;31, sampling rate <i>r</i>)</span></th></tr>
+          <tr><th><span class="d">Human microbiome</span><i>r</i>&nbsp;=&nbsp;0.5</th><td>7.19</td><td>6.10</td><td class="g w" style="--t:0.76">3.65×</td><td class="g w" style="--t:0.81">3.97×</td></tr>
+          <tr><th><span class="d"></span><i>r</i>&nbsp;=&nbsp;0.3</th><td>11.0</td><td>9.57</td><td class="g w" style="--t:0.71">3.33×</td><td class="g w" style="--t:0.75">3.56×</td></tr>
+          <tr><th><span class="d"></span><i>r</i>&nbsp;=&nbsp;0.1</th><td>22.6</td><td>20.8</td><td class="g" style="--t:0.48">2.27×</td><td class="g" style="--t:0.49">2.30×</td></tr>
+          <tr><th><span class="d"></span><i>r</i>&nbsp;=&nbsp;0.01</th><td>41.7</td><td>39.1</td><td class="g" style="--t:0.23">1.49×</td><td class="g" style="--t:0.24">1.50×</td></tr>
+          <tr><th><span class="d"></span><i>r</i>&nbsp;=&nbsp;0.001</th><td>48.3</td><td>45.5</td><td class="g" style="--t:0.17">1.34×</td><td class="g" style="--t:0.17">1.33×</td></tr>
+          <tr><th><span class="d"></span><i>r</i>&nbsp;=&nbsp;0.0001</th><td>53.6</td><td>49.3</td><td class="g" style="--t:0.13">1.24×</td><td class="g" style="--t:0.12">1.24×</td></tr>
+          <tr><th><span class="d">MiniKraken 4 GiB</span></th><td>32.7</td><td>30.9</td><td class="g" style="--t:0.32">1.71×</td><td class="g" style="--t:0.36">1.85×</td></tr>
+          <tr><th><span class="d">MiniKraken 8 GiB</span></th><td>27.9</td><td>26.3</td><td class="g" style="--t:0.46">2.18×</td><td class="g" style="--t:0.46">2.17×</td></tr>
+          <tr class="sh"><th colspan="5">Sequencing reads <span>(<i>k</i>&nbsp;=&nbsp;31, minimum abundance <i>a</i>)</span></th></tr>
+          <tr><th><span class="d">Human RNA-seq</span><i>a</i>&nbsp;≥&nbsp;1</th><td>2.71</td><td>2.39</td><td class="g" style="--t:0.14">1.26×</td><td class="g" style="--t:0.15">1.28×</td></tr>
+          <tr><th><span class="d"></span><i>a</i>&nbsp;≥&nbsp;2</th><td>3.52</td><td>2.83</td><td class="g" style="--t:0.16">1.31×</td><td class="g" style="--t:0.22">1.45×</td></tr>
+          <tr><th><span class="d"></span><i>a</i>&nbsp;≥&nbsp;3</th><td>3.30</td><td>2.64</td><td class="g" style="--t:0.14">1.26×</td><td class="g" style="--t:0.20">1.41×</td></tr>
+          <tr><th><span class="d"></span><i>a</i>&nbsp;≥&nbsp;5</th><td>3.15</td><td>2.54</td><td class="g" style="--t:0.12">1.23×</td><td class="g" style="--t:0.17">1.34×</td></tr>
+          <tr><th><span class="d"></span><i>a</i>&nbsp;≥&nbsp;10</th><td>3.04</td><td>2.46</td><td class="g" style="--t:0.11">1.20×</td><td class="g" style="--t:0.15">1.28×</td></tr>
+<!-- /gen:compression -->
+          </tbody>
+          </table>
+          <figcaption class="caption">Size of compressed masked superstrings (superstring compressed with xz or GeCo3, mask with bzip2) and how many times smaller they are than the best compressed SPSS: the smaller of simplitigs and matchtigs, or simplitigs alone where matchtigs could not be computed. Darker cells mean larger reductions. Adapted from Fig.&nbsp;4 of the upcoming new version of the <a href="#ms">masked superstrings paper</a>.</figcaption>
+        </figure>
         <p>The BMS storage format combines a BiGreedy superstring, its mask, unitig boundaries and unitig abundances. On a randomized benchmark of accessions from the Logan archive, it reduced the compressed size of unitigs with abundances several-fold, while recovering them exactly.</p>
       </div></details>
-      <details class="sec"><summary><span>Masked superstrings improve indexing</span></summary><div class="body">
+      <details class="sec" id="indexing"><summary><span>Masked superstrings improve indexing</span></summary><div class="body">
         <p>The masked Burrows-Wheeler transform (MBWT) of a masked superstring yields <a href="#fmsi">FMSI</a>, a memory-efficient exact <span class="nw"><i>k</i>-mer</span> index supporting membership queries, compressed dictionary queries, and set operations through <a href="#fms">function-assigned masked superstrings</a>. Because BiGreedy superstrings retain unitigs and simplitigs as substrings, they also integrate with existing SPSS-based indexes such as SSHash.</p>
+        <p><a href="https://github.com/masked-superstrings/fmsi2">FMSI2</a> keeps the memory footprint of FMSI (<!-- gen:index-text -->3.6–7.1 bits per <span class="nw"><i>k</i>-mer</span> in its two smaller presets<!-- /gen:index-text -->) and answers queries more than an order of magnitude faster, which places it on the Pareto front of memory and query time among the compared indexes.</p>
+        <figure class="cost">
+          <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><path id="mk-d" d="M0-3.3 3.3 0 0 3.3-3.3 0z"/><rect id="mk-s" x="-2.4" y="-2.4" width="4.8" height="4.8"/><circle id="mk-c" r="2.7"/><path id="mk-u" d="M0-3 3.3 2.5H-3.3z"/><path id="mk-v" d="M0 3 3.3-2.5H-3.3z"/></defs></svg>
+          <div class="cost-key mkd"><span class="k-fmsi2"><svg class="mk" viewBox="-5 -5 10 10"><use href="#mk-s"/></svg>FMSI2</span><span class="k-fmsi"><svg class="mk" viewBox="-5 -5 10 10"><use href="#mk-d"/></svg>FMSI</span><span class="k-sbwt"><svg class="mk" viewBox="-5 -5 10 10"><use href="#mk-v"/></svg>SBWT</span><span class="k-sbwtsq"><svg class="mk" viewBox="-5 -5 10 10"><use href="#mk-u"/></svg>SBWT-squeeze</span><span class="k-sshash"><svg class="mk" viewBox="-5 -5 10 10"><use href="#mk-c"/></svg>SSHash</span></div>
+          <div class="cost-key mkd"><span><svg class="mk" viewBox="-5 -5 10 10"><use href="#mk-s"/></svg>fast</span><span><svg class="mk" viewBox="-5 -5 10 10"><use class="sm" href="#mk-s"/></svg>small</span><span><svg class="mk" viewBox="-5 -5 10 10"><use class="xs" href="#mk-s"/></svg>extra small</span><span><svg class="mk" viewBox="-5 -5 10 10" style="width:22px"><path d="M-9 0H9" fill="none" stroke="currentColor" stroke-width=".9" stroke-dasharray=".2 1.8" stroke-linecap="round"/></svg>Pareto front (other points are faded)</span></div>
+          <div class="ix" role="img" aria-label="Scatter plots of index size in memory against query time per k-mer for FMSI2, FMSI, SBWT, SBWT-squeeze and SSHash on three datasets, for isolated present k-mers and for streamed reads. FMSI2 lies on the Pareto front in all panels.">
+<!-- gen:index -->
+          <div></div><div class="ch">Tongue metagenome</div><div class="ch"><i>E. coli</i> pangenome</div><div class="ch">Human RNA-seq</div>
+          <div class="rt"><span class="nw"><i>k</i>-mers</span> present in the set, isolated queries <span class="u">— time per <span class="nw"><i>k</i>-mer</span></span></div>
+          <div class="ya"><span style="--p:85">300 ns</span><span style="--p:64.7">1 µs</span><span style="--p:46.2">3 µs</span><span style="--p:26">10 µs</span><span style="--p:7.5">30 µs</span></div>
+          <div class="pl"><svg viewBox="0 0 100 75" aria-hidden="true"><path class="gr" d="M11.1 0V75M41.3 0V75M71.6 0V75M0 63.7H100M0 48.5H100M0 34.7H100M0 19.5H100M0 5.6H100"/><polyline class="fr" points="9.7,19.3 10.5,53.3 17.9,59.3 60.1,67.7"/><use class="k-sbwt sm dom" href="#mk-v" x="9.8" y="11.1"/><use class="k-sbwtsq sm dom" href="#mk-u" x="37.2" y="51.3"/><use class="k-sshash dom" href="#mk-c" x="50.2" y="54.6"/><use class="k-sbwt dom" href="#mk-v" x="64.3" y="33.3"/><use class="k-sbwtsq dom" href="#mk-u" x="90.3" y="67.0"/><use class="k-fmsi dom" href="#mk-d" x="22.3" y="19.3"/><use class="k-fmsi sm" href="#mk-d" x="9.7" y="19.3"/><use class="k-fmsi2 xs" href="#mk-s" x="10.5" y="53.3"/><use class="k-fmsi2 sm" href="#mk-s" x="17.9" y="59.3"/><use class="k-fmsi2" href="#mk-s" x="60.1" y="67.7"/></svg></div>
+          <div class="pl"><svg viewBox="0 0 100 75" aria-hidden="true"><path class="gr" d="M18.0 0V75M49.0 0V75M80.0 0V75M0 63.7H100M0 48.5H100M0 34.7H100M0 19.5H100M0 5.6H100"/><polyline class="fr" points="9.7,9.8 11.7,19.1 13.1,53.1 21.3,58.6 64.4,67.0"/><use class="k-sbwtsq sm dom" href="#mk-u" x="38.2" y="48.9"/><use class="k-sshash dom" href="#mk-c" x="57.1" y="51.6"/><use class="k-sbwt dom" href="#mk-v" x="63.4" y="33.0"/><use class="k-sbwtsq dom" href="#mk-u" x="90.3" y="66.9"/><use class="k-fmsi dom" href="#mk-d" x="25.2" y="19.1"/><use class="k-sbwt sm" href="#mk-v" x="9.7" y="9.8"/><use class="k-fmsi sm" href="#mk-d" x="11.7" y="19.1"/><use class="k-fmsi2 xs" href="#mk-s" x="13.1" y="53.1"/><use class="k-fmsi2 sm" href="#mk-s" x="21.3" y="58.6"/><use class="k-fmsi2" href="#mk-s" x="64.4" y="67.0"/></svg></div>
+          <div class="pl"><svg viewBox="0 0 100 75" aria-hidden="true"><path class="gr" d="M25.5 0V75M56.5 0V75M87.6 0V75M0 63.7H100M0 48.5H100M0 34.7H100M0 19.5H100M0 5.6H100"/><polyline class="fr" points="9.7,7.3 15.1,18.1 17.0,51.7 20.1,57.7 66.7,64.9"/><use class="k-sbwtsq sm dom" href="#mk-u" x="40.1" y="44.0"/><use class="k-sshash dom" href="#mk-c" x="59.7" y="48.5"/><use class="k-sbwt dom" href="#mk-v" x="62.5" y="32.7"/><use class="k-sbwtsq dom" href="#mk-u" x="90.3" y="62.0"/><use class="k-fmsi dom" href="#mk-d" x="27.8" y="18.1"/><use class="k-sbwt sm" href="#mk-v" x="9.7" y="7.3"/><use class="k-fmsi sm" href="#mk-d" x="15.1" y="18.1"/><use class="k-fmsi2 xs" href="#mk-s" x="17.0" y="51.7"/><use class="k-fmsi2 sm" href="#mk-s" x="20.1" y="57.7"/><use class="k-fmsi2" href="#mk-s" x="66.7" y="64.9"/></svg></div>
+          <div class="rt">Reads, streamed queries <span class="u">— time per <span class="nw"><i>k</i>-mer</span></span></div>
+          <div class="ya"><span style="--p:70.8">100 ns</span><span style="--p:41.6">1 µs</span><span style="--p:12.3">10 µs</span></div>
+          <div class="pl"><svg viewBox="0 0 100 75" aria-hidden="true"><path class="gr" d="M11.1 0V75M41.3 0V75M71.6 0V75M0 53.1H100M0 31.2H100M0 9.2H100"/><polyline class="fr" points="9.7,22.9 10.5,50.9 17.9,56.2 50.2,57.1 60.1,64.5 90.3,67.7"/><use class="k-sbwt sm dom" href="#mk-v" x="9.8" y="14.0"/><use class="k-sbwtsq sm dom" href="#mk-u" x="37.2" y="33.2"/><use class="k-sbwt dom" href="#mk-v" x="64.3" y="41.7"/><use class="k-fmsi dom" href="#mk-d" x="22.3" y="24.9"/><use class="k-fmsi sm" href="#mk-d" x="9.7" y="22.9"/><use class="k-fmsi2 xs" href="#mk-s" x="10.5" y="50.9"/><use class="k-fmsi2 sm" href="#mk-s" x="17.9" y="56.2"/><use class="k-sshash" href="#mk-c" x="50.2" y="57.1"/><use class="k-sbwtsq" href="#mk-u" x="90.3" y="67.7"/><use class="k-fmsi2" href="#mk-s" x="60.1" y="64.5"/></svg></div>
+          <div class="pl"><svg viewBox="0 0 100 75" aria-hidden="true"><path class="gr" d="M18.0 0V75M49.0 0V75M80.0 0V75M0 53.1H100M0 31.2H100M0 9.2H100"/><polyline class="fr" points="9.7,12.6 11.7,22.2 13.1,45.6 21.3,51.5 57.1,56.9 64.4,66.7"/><use class="k-sbwtsq sm dom" href="#mk-u" x="38.2" y="31.1"/><use class="k-sbwt dom" href="#mk-v" x="63.4" y="44.0"/><use class="k-sbwtsq dom" href="#mk-u" x="90.3" y="63.8"/><use class="k-fmsi dom" href="#mk-d" x="25.2" y="27.9"/><use class="k-sbwt sm" href="#mk-v" x="9.7" y="12.6"/><use class="k-fmsi sm" href="#mk-d" x="11.7" y="22.2"/><use class="k-fmsi2 xs" href="#mk-s" x="13.1" y="45.6"/><use class="k-fmsi2 sm" href="#mk-s" x="21.3" y="51.5"/><use class="k-sshash" href="#mk-c" x="57.1" y="56.9"/><use class="k-fmsi2" href="#mk-s" x="64.4" y="66.7"/></svg></div>
+          <div class="pl"><svg viewBox="0 0 100 75" aria-hidden="true"><path class="gr" d="M25.5 0V75M56.5 0V75M87.6 0V75M0 53.1H100M0 31.2H100M0 9.2H100"/><polyline class="fr" points="9.7,7.3 15.1,17.1 17.0,36.3 20.1,41.3 62.5,44.1 66.7,61.5 90.3,63.7"/><use class="k-sbwtsq sm dom" href="#mk-u" x="40.1" y="26.0"/><use class="k-sshash dom" href="#mk-c" x="59.7" y="40.0"/><use class="k-fmsi dom" href="#mk-d" x="27.8" y="22.2"/><use class="k-sbwt sm" href="#mk-v" x="9.7" y="7.3"/><use class="k-fmsi sm" href="#mk-d" x="15.1" y="17.1"/><use class="k-fmsi2 xs" href="#mk-s" x="17.0" y="36.3"/><use class="k-fmsi2 sm" href="#mk-s" x="20.1" y="41.3"/><use class="k-sbwt" href="#mk-v" x="62.5" y="44.1"/><use class="k-sbwtsq" href="#mk-u" x="90.3" y="63.7"/><use class="k-fmsi2" href="#mk-s" x="66.7" y="61.5"/></svg></div>
+          <div></div><div class="xa"><span style="--p:11.1">4</span><span style="--p:41.3">8</span><span style="--p:71.6">16</span></div><div class="xa"><span style="--p:18">4</span><span style="--p:49">8</span><span style="--p:80">16</span></div><div class="xa"><span style="--p:25.5">8</span><span style="--p:56.5">16</span><span style="--p:87.6">32</span></div>
+          <div class="xl">Index size in memory (bits per <span class="nw"><i>k</i>-mer</span>)</div>
+<!-- /gen:index -->
+          </div>
+          <figcaption class="caption">Index size in memory against query time per <span class="nw"><i>k</i>-mer</span> (31-mers, one thread) on three datasets of the <a href="#fmsi">FMSI paper</a>, for isolated <span class="nw"><i>k</i>-mers</span> present in the set and for streamed reads. Both axes are logarithmic. Adapted from the benchmarks in the <a href="https://github.com/masked-superstrings/fmsi2#benchmarks">FMSI2 README</a>.</figcaption>
+        </figure>
       </div></details>
     </div>
   </section>
   <section id="software">
     <h2>Software</h2>
     <div class="tool c-red">
-      <a class="icon" href="https://github.com/masked-superstrings/kmercamel" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M5 33C12 33 12 9 20.5 9S29 27 32 27S35 9 43.5 9S52 33 59 33" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="46" text-anchor="middle" font-size="8.5">ACG<tspan opacity=".5">t</tspan>A<tspan opacity=".5">ca</tspan></text><text x="32" y="56" text-anchor="middle" font-size="8.5" opacity=".6">1110100</text></svg></a>
+      <a class="icon" href="https://github.com/OndrejSladky/kmercamel" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M5 33C12 33 12 9 20.5 9S29 27 32 27S35 9 43.5 9S52 33 59 33" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="32" y="46" text-anchor="middle" font-size="8.5">ACG<tspan opacity=".5">t</tspan>A<tspan opacity=".5">ca</tspan></text><text x="32" y="56" text-anchor="middle" font-size="8.5" opacity=".6">1110100</text></svg></a>
       <div>
-        <a class="name" href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a> – computes masked superstrings from original <i>k</i>-mer sets or from unitigs/simplitigs, optimizes their masks for compression or indexing, and computes lower bounds on the superstring length.
-        <div class="links"><a href="https://github.com/masked-superstrings/kmercamel">GitHub</a><a href="https://anaconda.org/bioconda/kmercamel">Bioconda</a><a href="https://doi.org/10.1101/2023.02.01.526717">Paper</a></div>
+        <a class="name" href="https://github.com/OndrejSladky/kmercamel">KmerCamel</a> – computes masked superstrings from original <i>k</i>-mer sets or from unitigs/simplitigs, optimizes their masks for compression or indexing, and computes lower bounds on the superstring length.
+        <div class="links"><a href="https://github.com/OndrejSladky/kmercamel">GitHub</a><a href="https://anaconda.org/bioconda/kmercamel">Bioconda</a><a href="https://doi.org/10.1101/2023.02.01.526717">Paper</a></div>
       </div>
     </div>
     <div class="tool c-blue">
-      <a class="icon" href="https://github.com/masked-superstrings/fmsi" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="26" r="20" fill="none" stroke-width="2.5"/><path d="M40.5 40.5L57 57" stroke-width="4" stroke-linecap="round"/><text x="26" y="25" text-anchor="middle" font-size="7">ACG<tspan opacity=".5">t</tspan>A<tspan opacity=".5">ca</tspan></text><text x="26" y="33" text-anchor="middle" font-size="7" opacity=".6">1110100</text></svg></a>
+      <a class="icon" href="https://github.com/OndrejSladky/fmsi" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="26" r="20" fill="none" stroke-width="2.5"/><path d="M40.5 40.5L57 57" stroke-width="4" stroke-linecap="round"/><text x="26" y="25" text-anchor="middle" font-size="7">ACG<tspan opacity=".5">t</tspan>A<tspan opacity=".5">ca</tspan></text><text x="26" y="33" text-anchor="middle" font-size="7" opacity=".6">1110100</text></svg></a>
       <div>
-        <a class="name" href="https://github.com/masked-superstrings/fmsi">FMSI</a> – a memory-efficient exact <i>k</i>-mer set index based on masked superstrings and the masked Burrows-Wheeler transform; supports membership queries, compressed dictionary queries, and set operations.
-        <div class="links"><a href="https://github.com/masked-superstrings/fmsi">GitHub</a><a href="https://anaconda.org/bioconda/fmsi">Bioconda</a><a href="https://doi.org/10.1093/bioadv/vbaf290">Paper</a></div>
+        <a class="name" href="https://github.com/OndrejSladky/fmsi">FMSI</a> – a memory-efficient exact <i>k</i>-mer set index based on masked superstrings and the masked Burrows-Wheeler transform; supports membership queries, compressed dictionary queries, and set operations.
+        <div class="links"><a href="https://github.com/OndrejSladky/fmsi">GitHub</a><a href="https://anaconda.org/bioconda/fmsi">Bioconda</a><a href="https://doi.org/10.1093/bioadv/vbaf290">Paper</a></div>
       </div>
     </div>
     <div class="tool c-pro">
@@ -388,10 +538,11 @@ h2{margin-top:42px}
         <div class="venue"><em>RECOMB-Seq 2023; bioRxiv, 2023</em></div>
         <div class="doi">DOI: <a href="https://doi.org/10.1101/2023.02.01.526717">10.1101/2023.02.01.526717</a></div>
         <p class="description">The original masked superstring framework, which unifies textual <i>k</i>-mer set representations such as simplitigs and matchtigs, together with its computational complexity and greedy construction algorithms implemented in KmerCamel.</p>
+        <p class="description">A new version of the paper is in preparation, with the scalable BiGreedy <a href="#construction">construction</a>, the <a href="#optimality">near-optimality</a> of the resulting superstrings, and the <a href="#compression">compression</a> of Logan unitig archives.</p>
         <div class="links">
           <a href="https://brinda.eu/papers/2023-SladkyEtAl-RECOMBSeq.pdf">PDF</a>
           <a href="https://doi.org/10.1101/2023.02.01.526717">Preprint</a>
-          <a href="https://github.com/masked-superstrings/kmercamel">KmerCamel</a>
+          <a href="https://github.com/OndrejSladky/kmercamel">KmerCamel</a>
           <a href="https://github.com/masked-superstrings/ms-supplement">Code &amp; data</a>
           <button type="button" class="bib-btn" aria-expanded="false" aria-controls="bib-ms">BibTeX</button>
         </div>
@@ -416,7 +567,7 @@ h2{margin-top:42px}
         <div class="links">
           <a href="https://brinda.eu/papers/2026-SladkyEtAl-BioinformAdv.pdf">PDF</a>
           <a href="https://doi.org/10.1093/bioadv/vbaf290">Paper</a>
-          <a href="https://github.com/masked-superstrings/fmsi">FMSI</a>
+          <a href="https://github.com/OndrejSladky/fmsi">FMSI</a>
           <button type="button" class="bib-btn" aria-expanded="false" aria-controls="bib-fmsi">BibTeX</button>
         </div>
         <div class="bib" id="bib-fmsi" hidden><button type="button" class="bib-copy">Copy</button><pre>@article{Sladky2026fmsi,
@@ -469,7 +620,7 @@ h2{margin-top:42px}
           <a href="https://brinda.eu/papers/2025-SladkyEtAl-PSC.pdf">PDF</a>
           <a href="https://www.stringology.org/event/2025/p04.html">Paper</a>
           <a href="https://doi.org/10.1101/2024.03.06.583483">Preprint</a>
-          <a href="https://github.com/masked-superstrings/fmsi">FMSI</a>
+          <a href="https://github.com/OndrejSladky/fmsi">FMSI</a>
           <button type="button" class="bib-btn" aria-expanded="false" aria-controls="bib-fms">BibTeX</button>
         </div>
         <div class="bib" id="bib-fms" hidden><button type="button" class="bib-copy">Copy</button><pre>@inproceedings{Sladky2025fms,
@@ -510,6 +661,8 @@ document.addEventListener('click',function(e){
   function fallback(){var r=document.createRange();r.selectNodeContents(pre);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);var ok=false;try{ok=document.execCommand('copy')}catch(_){}done(ok)}
   if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(pre.textContent).then(function(){done(true)},fallback);else fallback();
 });
+function openBox(){var el=location.hash&&document.getElementById(location.hash.slice(1));if(el&&el.matches('details.sec')){el.open=true;el.scrollIntoView()}}
+addEventListener('hashchange',openBox);openBox();
 </script>
 </body>
 </html>
